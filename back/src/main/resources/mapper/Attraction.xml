@@ -6,17 +6,15 @@
 <mapper namespace="com.ssafy.enjoytrip.dao.AttractionDAO">
 
 	<select id="findAllByFilter" parameterType="AttractionFilter" resultType="Attraction">
-		select attraction_id, type_id, title, address, image, a.sido_code, a.gugun_code, latitude, longitude, overview
-		from attraction a
-		join sido s on a.sido_code = s.sido_code
-		join gugun g on a.gugun_code = g.gugun_code
+		select *
+		from attraction
 		<where>
-			<if test="sidoCode != 0">and a.sido_code = #{sidoCode}</if>
-			<if test="gugunCode != 0">and a.gugun_code = #{gugunCode}</if>
+			<if test="sidoCode != 0">and sido_code = #{sidoCode}</if>
+			<if test="gugunCode != 0">and gugun_code = #{gugunCode}</if>
 			<if test="contentTypeId != 0">and type_id = #{contentTypeId}</if>
 			<if test="title != null">and title like concat('%', #{title}, '%')</if>
 		</where>
-		limit 500
+		limit 100
 	</select>
 
 </mapper>
