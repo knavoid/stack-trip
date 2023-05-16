@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <nav-bar></nav-bar>
-    <router-view/>
+    <div class="container">
+      <router-view/>
+    </div>
   </div>
 </template>
 <script>
@@ -38,5 +40,7 @@ nav a.router-link-exact-active {
   color: #ffffff;
 
 }
-
+.container{
+    margin: 3% 4% 0 4%;
+    }
 </style>
