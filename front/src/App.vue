@@ -41,6 +41,7 @@ nav a.router-link-exact-active {
 
 }
 .container{
-    margin: 3% 4% 0 4%;
+    max-width: 80%;
+    margin: 3% 2% 0 2%;
     }
 </style>
