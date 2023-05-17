@@ -17,4 +17,15 @@
 		limit 100
 	</select>
 
+	<select id="findSidoNames" resultType="String">
+		select sido_name
+		from sido
+	</select>
+
+	<select id="findGugunNamesBySidoCode" resultType="String">
+		select gugun_name
+		from gugun
+		where sido_code = #{sidoCode};
+	</select>
+
 </mapper>

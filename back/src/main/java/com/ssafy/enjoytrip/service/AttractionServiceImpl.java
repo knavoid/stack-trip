@@ -22,4 +22,14 @@ public class AttractionServiceImpl implements AttractionService {
 		return attractionDAO.findAllByFilter(attractionFilter);
 	}
 
+	@Override
+	public List<String> getSidoNames() throws Exception {
+		return attractionDAO.findSidoNames();
+	}
+
+	@Override
+	public List<String> getGugunNames(int sidoCode) throws Exception {
+		return attractionDAO.findGugunNamesBySidoCode(sidoCode);
+	}
+
 }
