@@ -34,6 +34,11 @@ const routes = [
 
   },
   {
+    path: '/board/detail/',
+    name: 'detail',
+    component: () => import('@/components/BoardDetail.vue')
+  },
+  {
     path: '/board/posting',
     name: 'posting',
     component: () => import('@/components/BoardPost.vue')
@@ -42,6 +47,26 @@ const routes = [
     path: '/bookmark',
     name: 'bookmark',
     component: () => import(/* webpackChunkName: "about" */ '../views/BookmarkView.vue')
+  },
+  {
+    path: '/qna',
+    name: 'qna',
+    component: () => import(/* webpackChunkName: "about" */ '../views/QnABoard.vue')
+  },
+  {
+    path: '/qna/qnaposting',
+    name: 'qnaposting',
+    component: () => import('@/components/QnAPost.vue')
+  },
+  {
+    path: '/qna/detail/:articleno',
+    name: 'qnadetail',
+    component: () => import('@/components/QnADetail.vue')
+  },
+  {
+    path: '/qna/modify/:articleno',
+    name: 'qnamodify',
+    component: () => import('@/components/QnAModify.vue')
   }
 
 ]
