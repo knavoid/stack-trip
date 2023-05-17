@@ -1,7 +1,8 @@
 <template>
   <div>
     <div>
-      <b-row>
+      <h1 class="mb-4">여행지 게시판</h1>
+      <b-row> 
         <b-col>
           <b-button @click="filterPosts(null)" variant="Link" class="text-decoration-none" size="big">전체 게시글</b-button>
         </b-col>
@@ -19,8 +20,8 @@
     </div>
 
     <hr/>
-    <b-table v-if="filteredPosts.length > 0" striped hover :items="filteredPosts"></b-table>
-    <b-table v-else striped hover :items="items"></b-table>
+    <b-table v-if="filteredPosts.length > 0" striped hover :items="filteredPosts" @row-clicked="viewArticle"></b-table>
+    <b-table v-else striped hover :items="items" @row-clicked="viewArticle"></b-table>
   </div>
 </template>
 
@@ -87,6 +88,10 @@ export default {
       }else{
         this.filteredPosts = this.items;
       }
+    },
+    viewArticle(item){
+      console.log(item);
+      this.$router.push("/board/detail");
     }
   }
 };
