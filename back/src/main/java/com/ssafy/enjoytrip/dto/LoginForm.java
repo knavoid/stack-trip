@@ -7,8 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class LoginForm {
 
-	private String email;
+    private String email;
 
-	private String password;
+    private String password;
 
 }

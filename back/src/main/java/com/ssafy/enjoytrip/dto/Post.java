@@ -10,23 +10,23 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class Post {
 
-	@NonNull
-	private int postId;
+    @NonNull
+    private int postId;
 
-	@NonNull
-	private int userCode;
+    @NonNull
+    private int userCode;
 
-	@NonNull
-	private String subject;
-	
-	@NonNull
-	private String content;
+    @NonNull
+    private String subject;
 
-	@NonNull
-	private int type;
+    @NonNull
+    private String content;
 
-	private String regTime;
-	
-	private int views;
+    @NonNull
+    private int type;
+
+    private String regTime;
+
+    private int views;
 
 }

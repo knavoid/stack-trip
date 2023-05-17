@@ -10,14 +10,14 @@ import java.util.List;
 @Repository
 public interface QuestionDAO {
 
-	void insert(Question question);
+    void insert(Question question);
 
-	List<Question> findAll();
+    List<Question> findAll();
 
-	Question findByQuestionId(int questionId);
+    Question findByQuestionId(int questionId);
 
-	void update(Question question);
+    void update(Question question);
 
-	void deleteByQuestionId(int questionId);
+    void deleteByQuestionId(int questionId);
 
 }

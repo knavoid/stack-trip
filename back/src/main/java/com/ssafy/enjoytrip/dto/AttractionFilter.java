@@ -7,12 +7,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AttractionFilter {
 
-	private int sidoCode;
+    private int sidoCode;
 
-	private int gugunCode;
+    private int gugunCode;
 
-	private int contentTypeId;
+    private int contentTypeId;
 
-	private String title;
+    private String title;
 
 }

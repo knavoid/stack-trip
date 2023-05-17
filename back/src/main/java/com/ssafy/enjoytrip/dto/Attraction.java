@@ -7,24 +7,24 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Attraction {
 
-	private int attractionId;
+    private int attractionId;
 
-	private int typeId;
+    private int typeId;
 
-	private String title;
+    private String title;
 
-	private String address;
+    private String address;
 
-	private String image;
+    private String image;
 
-	private String sidoCode;
+    private String sidoCode;
 
-	private String gugunCode;
+    private String gugunCode;
 
-	private String latitude;
+    private String latitude;
 
-	private String longitude;
+    private String longitude;
 
-	private String overview;
+    private String overview;
 
 }

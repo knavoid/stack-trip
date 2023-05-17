@@ -1,6 +1,8 @@
 package com.ssafy.enjoytrip.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
@@ -8,17 +10,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Question {
 
-	@NonNull
-	private int questionId;
+    @NonNull
+    private int questionId;
 
-	@NonNull
-	private int userCode;
+    @NonNull
+    private int userCode;
 
-	@NonNull
-	private String content;
+    @NonNull
+    private String content;
 
-	private String regTime;
+    private String regTime;
 
-	private List<Answer> answers;
+    private List<Answer> answers;
 
 }

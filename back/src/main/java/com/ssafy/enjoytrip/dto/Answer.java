@@ -1,23 +1,20 @@
 package com.ssafy.enjoytrip.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
 public class Answer {
 
-//	@NonNull
-	private int answerId;
+    private int answerId;
 
-//	@NonNull
-	private int questionId;
+    private int questionId;
 
-//	@NonNull
-	private int userCode;
-	
-//	@NonNull
-	private String content;
+    private int userCode;
 
-	private String regTime;
+    private String content;
+
+    private String regTime;
 
 }

@@ -16,57 +16,57 @@ import java.util.List;
 @RequestMapping("/question")
 public class QuestionController {
 
-	@Autowired
-	private QuestionService questionService;
+    @Autowired
+    private QuestionService questionService;
 
-	@PostMapping
-	protected ResponseEntity<Question> createQuestion(@RequestBody Question newQuestion) throws Exception {
-		Question question = questionService.getQuestion(newQuestion.getQuestionId());
-		if (question == null) {
-			questionService.createQuestion(newQuestion);
-			return ResponseEntity.created(URI.create("/question/" + newQuestion.getQuestionId())).body(newQuestion);
-		} else {
-			return ResponseEntity.internalServerError().build();
-		}
-	}
+    @PostMapping
+    protected ResponseEntity<Question> createQuestion(@RequestBody Question newQuestion) throws Exception {
+        Question question = questionService.getQuestion(newQuestion.getQuestionId());
+        if (question == null) {
+            questionService.createQuestion(newQuestion);
+            return ResponseEntity.created(URI.create("/question/" + newQuestion.getQuestionId())).body(newQuestion);
+        } else {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 
-	@GetMapping
-	protected ResponseEntity<List<Question>> getQuestions() throws Exception {
-		return ResponseEntity.ok(questionService.getQuestions());
-	}
+    @GetMapping
+    protected ResponseEntity<List<Question>> getQuestions() throws Exception {
+        return ResponseEntity.ok(questionService.getQuestions());
+    }
 
-	@GetMapping("/{questionId}")
-	protected ResponseEntity<Question> getQuestion(@PathVariable int questionId) throws Exception {
-		Question question = questionService.getQuestion(questionId);
-		if (question != null) {
-			return ResponseEntity.ok(question);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
+    @GetMapping("/{questionId}")
+    protected ResponseEntity<Question> getQuestion(@PathVariable int questionId) throws Exception {
+        Question question = questionService.getQuestion(questionId);
+        if (question != null) {
+            return ResponseEntity.ok(question);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-	@PutMapping("/{questionId}")
-	protected ResponseEntity<Question> modifyQuestion(@RequestBody Question question) throws Exception {
-		questionService.modifyQuestion(question);
-		return ResponseEntity.ok(question);
-	}
+    @PutMapping("/{questionId}")
+    protected ResponseEntity<Question> modifyQuestion(@RequestBody Question question) throws Exception {
+        questionService.modifyQuestion(question);
+        return ResponseEntity.ok(question);
+    }
 
-	@DeleteMapping("/{questionId}")
-	protected ResponseEntity<?> removeQuestion(@PathVariable int questionId) throws Exception {
-		Question question = questionService.getQuestion(questionId);
-		if (question != null) {
-			questionService.removeQuestion(questionId);
-			return ResponseEntity.noContent().build();
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
+    @DeleteMapping("/{questionId}")
+    protected ResponseEntity<?> removeQuestion(@PathVariable int questionId) throws Exception {
+        Question question = questionService.getQuestion(questionId);
+        if (question != null) {
+            questionService.removeQuestion(questionId);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-	@ExceptionHandler
-	public String handleException(Exception exception, Model model) {
-		log.error(exception.getMessage(), exception);
-		model.addAttribute("message", exception.getMessage());
-		return "error";
-	}
+    @ExceptionHandler
+    public String handleException(Exception exception, Model model) {
+        log.error(exception.getMessage(), exception);
+        model.addAttribute("message", exception.getMessage());
+        return "error";
+    }
 
 }

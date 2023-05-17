@@ -1,23 +1,23 @@
 package com.ssafy.enjoytrip.dao;
 
-import java.util.List;
-
 import com.ssafy.enjoytrip.dto.Post;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 @Repository
 public interface PostDAO {
 
-	void insert(Post post);
+    void insert(Post post);
 
-	List<Post> findAll();
+    List<Post> findAll();
 
-	Post findByPostId(int postId);
+    Post findByPostId(int postId);
 
-	void update(Post post);
+    void update(Post post);
 
-	void deleteByPostId(int postId);
+    void deleteByPostId(int postId);
 
 }

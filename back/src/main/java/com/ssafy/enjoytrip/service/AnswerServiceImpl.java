@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional
 public class AnswerServiceImpl implements AnswerService {
@@ -16,17 +14,17 @@ public class AnswerServiceImpl implements AnswerService {
     private AnswerDAO answerDAO;
 
     @Override
-	public void createAnswer(Answer answer) throws Exception {
+    public void createAnswer(Answer answer) throws Exception {
         answerDAO.insert(answer);
     }
 
     @Override
-	public void modifyAnswer(Answer answer) throws Exception {
+    public void modifyAnswer(Answer answer) throws Exception {
         answerDAO.update(answer);
     }
 
     @Override
-	public void removeAnswer(int answerId) throws Exception {
+    public void removeAnswer(int answerId) throws Exception {
         answerDAO.deleteByAnswerId(answerId);
     }
 
