@@ -17,6 +17,9 @@ public class Question {
     private int userCode;
 
     @NonNull
+    private String userName;
+
+    @NonNull
     private String content;
 
     private String regTime;

@@ -9,27 +9,34 @@
     </insert>
 
     <select id="findAll" resultType="Question">
-        select *
-        from question
+        select q.question_id, q.user_code, u.name, q.content, q.regtime
+        from question q
+        join user u on q.user_code = u.user_code;
     </select>
 
     <resultMap id="questionResultMap" type="Question">
         <id property="questionId" column="q_question_id"/>
         <result property="userCode" column="q_user_code"/>
+        <result property="userName" column="q_user_name"/>
         <result property="content" column="q_content"/>
         <result property="regTime" column="q_regtime"/>
         <collection property="answers" ofType="Answer">
             <id property="answerId" column="a_answer_id"/>
             <result property="questionId" column="a_question_id"/>
             <result property="userCode" column="a_user_code"/>
+            <result property="userName" column="a_user_name"/>
             <result property="content" column="a_content"/>
             <result property="regTime" column="a_regtime"/>
         </collection>
     </resultMap>
 
     <select id="findByQuestionId" resultMap="questionResultMap">
-        select q.question_id as q_question_id, q.user_code as q_user_code, q.content as q_content, q.regtime as q_regtime,
-        a.answer_id as a_answer_id, a.question_id as a_question_id, a.user_code as a_user_code, a.content as a_content, a.regtime as a_regtime
+        select q.question_id as q_question_id, q.user_code as q_user_code,
+            (select name from user where user_code = q_user_code) as q_user_name,
+            q.content as q_content, q.regtime as q_regtime,
+            a.answer_id as a_answer_id, a.question_id as a_question_id, a.user_code as a_user_code,
+            (select name from user where user_code = a_user_code) as a_user_name,
+            a.content as a_content, a.regtime as a_regtime
         from question q
         left join answer a on q.question_id = a.question_id
         where q.question_id = #{questionId}

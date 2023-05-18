@@ -13,6 +13,8 @@ public class Answer {
 
     private int userCode;
 
+    private String userName;
+
     private String content;
 
     private String regTime;
