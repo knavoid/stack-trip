@@ -3,13 +3,15 @@
     <h1>여행지 탐색</h1>
     <hr>
     <b-row>
-      <b-col cols="8"><div id="map"></div></b-col>
+      <b-col cols="8">
+        <div id="map"></div>
+      </b-col>
       <b-col>
         <div>
           <b-row>
-            <b-col><b-form-select v-model="sidoCode" :options="getSido" class="mb-3"></b-form-select></b-col>
-            <b-col><b-form-select v-model="gugunCode" :options="getGugun" class="mb-3"></b-form-select></b-col>
-            <b-col><b-form-select v-model="contentTypeId" :options="getContentTypeId" class="mb-3"></b-form-select></b-col>
+            <b-col><b-form-select v-model="sidoCode" :options="sidoOptions" value-field="key" text-field="value" class="mb-3"></b-form-select></b-col>
+            <b-col><b-form-select v-model="gugunCode" :options="gugunOptions" value-field="gugunCode" text-field="gugunName" class="mb-3"></b-form-select></b-col>
+            <b-col><b-form-select v-model="contentTypeId" :options="contentOptions" value-field="key" text-field="value" class="mb-3"></b-form-select></b-col>
           </b-row>
           <b-input-group class="mb-3">
             <b-form-input v-model="title" placeholder="검색어를 입력하세요"></b-form-input>
@@ -18,11 +20,28 @@
             </b-input-group-append>
           </b-input-group>
           <hr>
-          <b-list-group>
-            <b-list-group-item v-for="result in searchResults" :key="result.id">
-              {{result.id}} {{ result.name }}
-            </b-list-group-item>
-          </b-list-group>
+          <div v-for="result in searchResults" :key="result.id">
+            <b-row class="mb-3">
+              <b-col>
+                <!-- 이미지 로딩에 실패할 경우 대체 텍스트 또는 기본 이미지를 표시하도록 처리 -->
+                <img :src="result.image" alt="Image" class="img-fluid" @error="handleImageError(result)">
+              </b-col>
+              <b-col>
+                <b-list-group>
+                  <b-list-group-item>
+                    <b-row align-v="center">
+                      <b-col cols="auto">
+                        <strong>{{ result.title }}</strong>
+                      </b-col>
+                      <b-col cols="auto" class="ml-auto">
+                        {{ result.address }}
+                      </b-col>
+                    </b-row>
+                  </b-list-group-item>
+                </b-list-group>
+              </b-col>
+            </b-row>
+          </div>
         </div>
       </b-col>
     </b-row>
@@ -30,14 +49,52 @@
 </template>
 
 <script>
+import http from "@/util/http-common.js";
+
 export default {
   name: "KakaoMap",
   data() {
     return {
-      currPosition: {},
+      currPosition: {
+        latitude: null,
+        longitude: null,
+      },
       isPositionReady: false,
       markers: [],
       infowindow: null,
+
+      sidoOptions: [
+        { key: 1, value: "서울" },
+        { key: 2, value: "인천" },
+        { key: 3, value: "대전" },
+        { key: 4, value: "대구" },
+        { key: 5, value: "광주" },
+        { key: 6, value: "부산" },
+        { key: 7, value: "울산" },
+        { key: 8, value: "세종특별자치시" },
+        { key: 31, value: "경기도" },
+        { key: 32, value: "강원도" },
+        { key: 33, value: "충청북도" },
+        { key: 34, value: "충청남도" },
+        { key: 35, value: "경상북도" },
+        { key: 36, value: "경상남도" },
+        { key: 37, value: "전라북도" },
+        { key: 38, value: "전라남도" },
+        { key: 39, value: "제주도" },
+      ],
+      gugunOptions: [],
+
+      contentOptions:[
+        {key: 12, value: '관광지'},
+        {key: 14, value: '문화시설'},
+        {key: 15, value: '축제공연행사'},
+        {key: 25, value: '여행코스'},
+        {key: 28, value: '레포츠'},
+        {key: 32, value: '숙박'},
+        {key: 38, value: '쇼핑'},
+        {key: 39, value: '음식점'},
+
+      ],
 
       sidoCode: null,
       gugunCode: null,
@@ -61,25 +118,50 @@ export default {
       document.head.appendChild(script);
     }
   },
+  watch:{
+    sidoCode:{
+      handler(newSidoCode){
+        this.getGugun(newSidoCode);
+      },
+      immediate: true,
+    },
+  },
   computed:{
-    getSido(){
-      return ['옵션1', '옵션2', '옵션3'];
-    },
-    getGugun(){
-      return ['옵션1', '옵션2', '옵션3'];
-    },
-    getContentTypeId(){
-      return ['옵션1', '옵션2', '옵션3'];
-    },
 
   },  
   methods: {
+    getGugun() {
+      if (this.sidoCode) {
+      http.get(`attraction/gugun?sidoCode=${this.sidoCode}`)
+        .then(({ data }) => {
+          console.log(data);
+          this.gugunOptions = data;
+        }).catch((err) => {
+          console.log(err);
+        })
+    } else {
+      this.gugunOptions = [];
+    }
+    return this.gugunOptions;
+    },
     search(){
+      http.get(`attraction?sidoCode=${this.sidoCode}&gugunCode=${this.gugunCode}&contentTypeId=${this.contentTypeId}&title=${this.title}`)
+      .then(({data}) => {
+        console.log(data);
+        this.searchResults = data;
+      }).catch((err) => {
+        console.log(err);
+      })
+
       this.searchResults = [
         {id: 1, name: '검색결과1'},
         {id: 2, name: '검색결과2'},
         {id: 3, name: '검색결과3'},
       ];
+    },
+    handleImageError(result) {
+      // 이미지 로딩에 실패한 경우 대체 텍스트 또는 기본 이미지를 설정합니다.
+      result.image = "https://eumseongcci.korcham.net/images/no-image01.gif";
     },
     initMap() {
       const container = document.getElementById("map");
