@@ -24,12 +24,6 @@ public class AnswerController {
         return ResponseEntity.created(URI.create("/answer/" + newAnswer.getAnswerId())).body(newAnswer);
     }
 
-    @PutMapping("/{answerId}")
-    protected ResponseEntity<Answer> modifyAnswer(@RequestBody Answer answer) throws Exception {
-        answerService.modifyAnswer(answer);
-        return ResponseEntity.ok(answer);
-    }
-
     @DeleteMapping("/{answerId}")
     protected ResponseEntity<?> removeAnswer(@PathVariable int answerId) throws Exception {
         answerService.removeAnswer(answerId);

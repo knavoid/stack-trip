@@ -8,12 +8,6 @@
 		value (#{questionId}, #{userCode}, #{content})
 	</insert>
 
-	<update id="update">
-		update answer
-		set content = #{content}
-		where answer_id = #{answerId}
-	</update>
-
 	<delete id="deleteByAnswerId">
 		delete from answer
 		where answer_id = #{answerId}

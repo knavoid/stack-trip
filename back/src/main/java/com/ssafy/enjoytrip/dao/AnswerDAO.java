@@ -10,8 +10,6 @@ public interface AnswerDAO {
 
     void insert(Answer answer);
 
-    void update(Answer answer);
-
     void deleteByAnswerId(int answerId);
 
 }

@@ -19,11 +19,6 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public void modifyAnswer(Answer answer) throws Exception {
-        answerDAO.update(answer);
-    }
-
-    @Override
     public void removeAnswer(int answerId) throws Exception {
         answerDAO.deleteByAnswerId(answerId);
     }
