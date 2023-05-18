@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.enjoytrip.dao.AttractionDAO">
+
+    <select id="findAllByFilter" parameterType="AttractionFilter" resultType="Attraction">
+        select *
+        from attraction
+        <where>
+            <if test="sidoCode != 0">and sido_code = #{sidoCode}</if>
+            <if test="gugunCode != 0">and gugun_code = #{gugunCode}</if>
+            <if test="contentTypeId != 0">and type_id = #{contentTypeId}</if>
+            <if test="title != null">and title like concat('%', #{title}, '%')</if>
+        </where>
+        limit 100
+    </select>
+
+    <select id="findGugunNamesBySidoCode" resultType="Gugun">
+        select gugun_code, gugun_name
+        from gugun
+        where sido_code = #{sidoCode};
+    </select>
+
+</mapper>
