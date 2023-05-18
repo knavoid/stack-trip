@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.controller;
 
 import com.ssafy.enjoytrip.dto.Attraction;
 import com.ssafy.enjoytrip.dto.AttractionFilter;
+import com.ssafy.enjoytrip.dto.Gugun;
 import com.ssafy.enjoytrip.service.AttractionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +25,9 @@ public class AttractionController {
         return ResponseEntity.ok(attractionService.getAttractions(attractionFilter));
     }
 
-    @GetMapping("/sido")
-    protected ResponseEntity<List<String>> getSidoNames() throws Exception {
-        return ResponseEntity.ok(attractionService.getSidoNames());
-    }
-
     @GetMapping("/gugun")
-    protected ResponseEntity<List<String>> getGugunNames(@RequestParam int sidoCode) throws Exception {
-        return ResponseEntity.ok(attractionService.getGugunNames(sidoCode));
+    protected ResponseEntity<List<Gugun>> getGuguns(@RequestParam int sidoCode) throws Exception {
+        return ResponseEntity.ok(attractionService.getGuguns(sidoCode));
     }
 
 }

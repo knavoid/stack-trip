@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.dao;
 
 import com.ssafy.enjoytrip.dto.Attraction;
 import com.ssafy.enjoytrip.dto.AttractionFilter;
+import com.ssafy.enjoytrip.dto.Gugun;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -13,8 +14,6 @@ public interface AttractionDAO {
 
     List<Attraction> findAllByFilter(AttractionFilter attractionFilter);
 
-    List<String> findSidoNames();
-
-    List<String> findGugunNamesBySidoCode(int sidoCode);
+    List<Gugun> findGugunNamesBySidoCode(int sidoCode);
 
 }

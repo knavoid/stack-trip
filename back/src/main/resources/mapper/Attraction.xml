@@ -17,13 +17,8 @@
         limit 100
     </select>
 
-    <select id="findSidoNames" resultType="String">
-        select sido_name
-        from sido
-    </select>
-
-    <select id="findGugunNamesBySidoCode" resultType="String">
-        select gugun_name
+    <select id="findGugunNamesBySidoCode" resultType="Gugun">
+        select gugun_code, gugun_name
         from gugun
         where sido_code = #{sidoCode};
     </select>
