@@ -31,6 +31,11 @@
               여행 계획
             </router-link>
           </b-nav-item>
+          <b-nav-item>
+            <router-link to="/qna">
+              QnA 게시판
+            </router-link>
+          </b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
