@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.controller;
 import com.ssafy.enjoytrip.dto.LoginForm;
 import com.ssafy.enjoytrip.dto.User;
 import com.ssafy.enjoytrip.service.UserService;
+import com.ssafy.enjoytrip.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @PostMapping("/register")
     protected ResponseEntity<User> signUp(@RequestBody User user) throws Exception {
         userService.signUp(user);
@@ -27,25 +31,36 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    protected ResponseEntity<User> login(@RequestBody LoginForm loginForm) throws Exception {
+    protected ResponseEntity<String> login(@RequestBody LoginForm loginForm) throws Exception {
         User user = userService.login(loginForm.getEmail(), loginForm.getPassword());
         if (user != null) {
             // 로그인 성공
-            return ResponseEntity.ok(user);
+            String token = jwtUtil.generateToken(user);
+            return ResponseEntity.ok(token);
         } else {
             // 로그인 실패
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
-    @GetMapping("/{userCode}")
-    protected ResponseEntity<User> getUserInfo(@PathVariable int userCode) throws Exception {
+    @GetMapping
+    protected ResponseEntity<User> getUserInfo(@RequestHeader("Authorization") String token) throws Exception {
+        // 헤더에서 토큰 추출
+        String authToken = token.substring(7);
+
+        // 토큰의 유효성 검사
+        if (!jwtUtil.validateToken(authToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        // 사용자 코드 추출 후 정보 얻어오기
+        int userCode = jwtUtil.extractUserCode(authToken);
         User user = userService.getUserInfo(userCode);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
+        if (user == null) {
             return ResponseEntity.notFound().build();
         }
+
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping("/{userCode}")
