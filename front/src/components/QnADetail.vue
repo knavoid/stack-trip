@@ -37,7 +37,35 @@
                 </b-card>
             </b-col>
         </b-row>
-        
+        <hr>
+        <b-form @submit="onSubmitAnswer">
+            <b-form-group class="text-left" label="댓글달기" label-for="content">
+            <b-form-textarea
+                id="content"
+                v-model="newAnswer.content"
+                :rows="5"
+            ></b-form-textarea>
+            </b-form-group>
+            <b-button class="" type="submit" variant="primary">댓글달기</b-button>
+        </b-form>
+        <hr>
+        <div>
+            <h6 class="text-left">댓글</h6>
+            <div v-for="answer in article.answers" :key="answer.answerId">
+                        <b-card
+                        :header-html="`<span>작성자: ${answer.userName}</span><br/><span>작성시간:${answer.regTime}</span>`"
+                        class=" text-left mb-2"
+                        border-variant="dark"
+                        no-body
+                        >
+                        <b-card-body class="text-left">
+                            <div v-html="answer.content"></div>
+                        </b-card-body>
+                        
+                        <b-button variant="outline-danger" size="sm" @click="DeleteAnswer(answer)">삭제</b-button>
+                        </b-card>
+            </div>
+        </div>
     </b-container>
 </template>
 
@@ -53,9 +81,13 @@ export default {
                     userCode: 0,
                     content: "",
                     regTime: "",
-                    
+                    answers:[],
                 },
-            answer_article:[]
+            newAnswer:{
+                questionId: this.$route.params.articleno,
+                userCode: 5,
+                content: "",
+            }
             
 
         };
@@ -63,23 +95,22 @@ export default {
 
     
     created(){
-        // axios로 해당 board_id에 해당하는 article을 가져온다.
-        http.get(`/question/${this.$route.params.articleno}`).then(({ data }) => {
-            this.article = data;
-            console.log(data);
-        });
-        // console.log(this.article);
-
-        
-
+        this.getDetail();
     },
     methods:{
-        
+        getDetail(){
+            // axios로 해당 board_id에 해당하는 article을 가져온다.
+            http.get(`/question/${this.$route.params.articleno}`).then(({ data }) => {
+                this.article = data;
+                console.log(data);
+            });
+            // console.log(this.article);
+        },
         listArticle(){
             this.$router.push("/qna");
         },
         moveModifyArticle(){
-            this.$router.push(`/board/modify/${this.article.questionId}`);
+            this.$router.push(`/qna/modify/${this.article.questionId}`);
         },
         deleteArticle(){
             //여기에 article을 삭제하는 함수를 구현한다.
@@ -89,6 +120,36 @@ export default {
             });
             
         },  
+        onSubmitAnswer(evt) {
+            evt.preventDefault();
+            console.log(this.newAnswer);
+            let err = true;
+            if (this.newAnswer.content.length >= 1) {
+                err = false;
+            }
+            if (err) {
+                alert("내용을 입력해주세요.");
+                return;
+            } else {
+                console.log(this.newAnswer);
+                alert("답변이 등록되었습니다.");
+                http.post(`/answer`, this.newAnswer)
+                .then((response) => {
+                    this.newAnswer.content = ""; // 댓글 작성 후 내용 초기화
+                    this.newAnswer.userName = response.data.userName; // 작성자 이름 설정
+                    this.newAnswer.regTime = response.data.regTime; // 작성 시간 설정
+                    this.getDetail(); // 글 상세 정보 다시 가져오기
+                })
+                .catch((err) => {
+                    console.log("error :" + err);
+                });
+            }
+        },
+        DeleteAnswer(answer){
+            http.delete(`/answer/${answer.answerId}`).then(() => {
+                this.getDetail();
+            });
+        }
     }
 }
 </script>

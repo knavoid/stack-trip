@@ -1,16 +1,16 @@
 <template>
     <div class="container">
-      <h1 class="mt-5">QnA 수정</h1>
-      <b-form @submit="onSubmit">
+        <h1 class="mt-5">QnA 수정</h1>
+        <b-form @submit="onSubmit">
         <b-form-group label="내용" label-for="content">
-          <b-form-textarea
+            <b-form-textarea
             id="content"
             v-model="form.content"
             :rows="5"
-          ></b-form-textarea>
+            ></b-form-textarea>
         </b-form-group>
         <b-button class="mb-5" type="submit" variant="primary">수정하기</b-button>
-      </b-form>
+        </b-form>
     </div>
 </template>
 
@@ -20,10 +20,13 @@ export default {
     data() {
         return {  
         form: {
+            answers: [],
+            content: "",
             questionId: this.$route.params.articleno,
             userCode: 5,
-            content: "",
+            userName: "",
         },
+        
         
         };
     },
@@ -50,12 +53,13 @@ export default {
             return;
         }else{
             alert("글이 등록되었습니다.");
-            http.put("/question", this.form).then(() => {
+            http.put(`/question/${this.$route.params.articleno}`, this.form).then(() => {
                 this.$router.push("/qna");
             });
             
         }
     },
+    
 },
 };
 </script>
