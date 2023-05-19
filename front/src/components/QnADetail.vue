@@ -100,7 +100,11 @@ export default {
     methods:{
         getDetail(){
             // axios로 해당 board_id에 해당하는 article을 가져온다.
-            http.get(`/question/${this.$route.params.articleno}`).then(({ data }) => {
+            http.get(`/question/${this.$route.params.articleno}`,{
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                },
+            }).then(({ data }) => {
                 this.article = data;
                 console.log(data);
             });

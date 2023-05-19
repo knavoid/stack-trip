@@ -43,7 +43,11 @@
       };
     },
     created(){
-        http.get("/question").then(({data}) =>{
+        http.get("/question/list",{
+          headers:{
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
+          }
+        }).then(({data}) =>{
             this.items = data;
         });
     },
