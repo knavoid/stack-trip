@@ -30,7 +30,7 @@ public class PostController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/list")
     protected ResponseEntity<List<Post>> getPosts() throws Exception {
         return ResponseEntity.ok(postService.getPosts());
     }
