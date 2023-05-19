@@ -30,7 +30,7 @@ public class QuestionController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/list")
     protected ResponseEntity<List<Question>> getQuestions() throws Exception {
         return ResponseEntity.ok(questionService.getQuestions());
     }
