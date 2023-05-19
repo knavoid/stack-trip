@@ -40,6 +40,20 @@ export default {
         onSubmit(evt){
             evt.preventDefault()
             console.log(JSON.stringify(this.form))
+            if(this.form.email && this.form.password){
+                //로그인 요청 처리 로직
+                this.$store.dispatch('login', this.form)
+                .then(() => {
+                    this.$router.push('/');
+                    location.reload();
+                })
+                .catch((err) => {
+                    alert(err.response.data.message)
+                });
+            }else{
+                alert('이메일과 비밀번호를 입력해주세요.');
+                return false;
+            }
         }
     }
 
