@@ -16,6 +16,8 @@ public interface BookmarkDAO {
 
     Bookmark findByAttractionIdAndUserCode(int attractionId, int userCode);
 
+    int countByAttractionId(int attractionId);
+
     void deleteByAttractionIdAndUserCode(int attractionId, int userCode);
 
 }
