@@ -17,6 +17,9 @@ public class Post {
     private int userCode;
 
     @NonNull
+    private String userName;
+
+    @NonNull
     private String subject;
 
     @NonNull

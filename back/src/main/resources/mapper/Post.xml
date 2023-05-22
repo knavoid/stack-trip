@@ -9,14 +9,17 @@
     </insert>
 
     <select id="findAll" resultType="Post">
-        select *
-        from post
+        select p.post_id, p.user_code, u.name, p.subject, p.content, p.type, p.regtime, p.views
+        from post p
+        join user u on p.user_code = u.user_code
+        order by p.regtime
     </select>
 
     <select id="findByPostId" resultType="Post">
-        select *
-        from post
-        where post_id = #{postId}
+        select p.post_id, p.user_code, u.name, p.subject, p.content, p.type, p.regtime, p.views
+        from post p
+        join user u on p.user_code = u.user_code
+        where p.post_id = #{postId}
     </select>
 
     <update id="update">
