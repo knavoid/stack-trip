@@ -14,5 +14,7 @@ public interface PostService {
 
     void modifyPost(Post post) throws Exception;
 
+    void increasePostViews(int postId) throws Exception;
+
     void removePost(int postId) throws Exception;
 }

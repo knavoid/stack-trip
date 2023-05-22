@@ -36,6 +36,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void increasePostViews(int postId) throws Exception {
+        postDAO.updateViews(postId);
+    }
+
+    @Override
     public void removePost(int postId) throws Exception {
         postDAO.deleteByPostId(postId);
     }

@@ -18,6 +18,8 @@ public interface PostDAO {
 
     void update(Post post);
 
+    void updateViews(int postId);
+
     void deleteByPostId(int postId);
 
 }
