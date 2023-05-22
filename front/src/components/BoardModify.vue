@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>게시글 작성</h1>
+    <h1>게시글 수정</h1>
     <b-form @submit.prevent="onSubmit">
       <b-form-group label="게시글 종류" label-for="type">
         <b-form-select
@@ -19,30 +19,40 @@
           :rows="5"
         ></b-form-textarea>
       </b-form-group>
-      <b-button class="mb-5" type="submit" variant="primary"
-        >작성 완료</b-button
-      >
+      <b-button class="mb-5" type="submit" variant="primary">수정하기</b-button>
     </b-form>
   </div>
 </template>
-
+  
 <script>
 import http from "@/util/http-common.js";
 export default {
   data() {
     return {
       form: {
-        userCode: 5,
-        userName: "",
-        subject: "",
-        content: "",
-        type: 0,
+        userCode: null,
+        userName: null,
+        subject: null,
+        content: null,
+        type: null,
+        regTime: null,
+        views: null,
       },
       types: ["공지사항", "이벤트", "관광지 후기", "자유게시판"],
       selectedType: "",
     };
   },
+  created() {
+    this.getArticle();
+  },
   methods: {
+    getArticle() {
+      http.get(`/post/${this.$route.params.articleno}`).then(({ data }) => {
+        this.form = data;
+        this.selectedType = this.types[this.form.type - 1];
+        console.log(this.selectedType);
+      });
+    },
     onSubmit(evt) {
       evt.preventDefault();
 
@@ -56,9 +66,9 @@ export default {
       } else {
         this.form.type = this.types.indexOf(this.selectedType) + 1;
         console.log(this.form.type);
-        alert("글이 등록되었습니다.");
+        alert("글이 수정되었습니다.");
         http
-          .post("/post", this.form, {
+          .put(`/post/${this.$route.params.articleno}`, this.form, {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("token")}`,
             },
@@ -71,8 +81,8 @@ export default {
   },
 };
 </script>
-
-<style scoped>
+  
+  <style scoped>
 .container {
   margin-top: 20px;
   border: 1px solid #000000;
