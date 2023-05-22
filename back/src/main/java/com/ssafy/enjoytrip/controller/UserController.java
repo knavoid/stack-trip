@@ -63,6 +63,11 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping("/email")
+    protected ResponseEntity<Boolean> emailDuplicateCheck(@RequestParam String email) throws Exception {
+        return ResponseEntity.ok(userService.isEmailExist(email));
+    }
+
     @PutMapping("/{userCode}")
     protected ResponseEntity<User> modifyUserInfo(@RequestBody User user) throws Exception {
         userService.modifyUserInfo(user);
