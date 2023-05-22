@@ -31,6 +31,11 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
+    public int getBookmarkCounts(int attractionId) throws Exception {
+        return bookmarkDAO.countByAttractionId(attractionId);
+    }
+
+    @Override
     public void removeBookmark(int attractionId, int userCode) throws Exception {
         bookmarkDAO.deleteByAttractionIdAndUserCode(attractionId, userCode);
     }

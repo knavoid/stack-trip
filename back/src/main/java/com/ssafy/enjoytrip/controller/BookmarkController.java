@@ -34,6 +34,11 @@ public class BookmarkController {
         return ResponseEntity.ok(bookmarkService.isBookmarkExist(attractionId, userCode));
     }
 
+    @GetMapping("/count")
+    protected ResponseEntity<Integer> getBookmarkCounts(@RequestParam int attractionId) throws Exception {
+        return ResponseEntity.ok(bookmarkService.getBookmarkCounts(attractionId));
+    }
+
     @DeleteMapping
     protected ResponseEntity<?> removeBookmark(@RequestParam int attractionId, @RequestParam int userCode) throws Exception {
         bookmarkService.removeBookmark(attractionId, userCode);

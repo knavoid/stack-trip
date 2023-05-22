@@ -25,6 +25,11 @@ public class AttractionController {
         return ResponseEntity.ok(attractionService.getAttractions(attractionFilter));
     }
 
+    @GetMapping("/top5")
+    protected ResponseEntity<List<Attraction>> getTop5Attractions() throws Exception {
+        return ResponseEntity.ok(attractionService.getTop5Attractions());
+    }
+
     @GetMapping("/gugun")
     protected ResponseEntity<List<Gugun>> getGuguns(@RequestParam int sidoCode) throws Exception {
         return ResponseEntity.ok(attractionService.getGuguns(sidoCode));

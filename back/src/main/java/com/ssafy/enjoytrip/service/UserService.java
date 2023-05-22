@@ -10,6 +10,8 @@ public interface UserService {
 
     User getUserInfo(int userCode) throws Exception;
 
+    boolean isEmailExist(String email) throws Exception;
+
     void modifyUserInfo(User user) throws Exception;
 
     void deleteAccount(int userCode) throws Exception;

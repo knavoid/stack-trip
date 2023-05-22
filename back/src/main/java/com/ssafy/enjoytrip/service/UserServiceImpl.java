@@ -29,6 +29,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isEmailExist(String email) throws Exception {
+        User user = userDAO.findByEmail(email);
+        return user != null;
+    }
+
+    @Override
     public void modifyUserInfo(User user) throws Exception {
         userDAO.update(user);
     }

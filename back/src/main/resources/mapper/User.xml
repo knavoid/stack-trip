@@ -22,6 +22,12 @@
         where user_code = #{userCode}
     </select>
 
+    <select id="findByEmail" resultType="User">
+        select *
+        from user
+        where email = #{email}
+    </select>
+
     <update id="update">
         update user
         set password = #{password}, name = #{name}, email = #{email}

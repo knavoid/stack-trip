@@ -10,6 +10,8 @@ public interface AttractionService {
 
     List<Attraction> getAttractions(AttractionFilter attractionFilter) throws Exception;
 
+    List<Attraction> getTop5Attractions() throws Exception;
+
     List<Gugun> getGuguns(int sidoCode) throws Exception;
 
 }

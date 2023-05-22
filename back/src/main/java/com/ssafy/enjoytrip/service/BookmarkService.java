@@ -12,6 +12,8 @@ public interface BookmarkService {
 
     boolean isBookmarkExist(int attractionId, int userCode) throws Exception;
 
+    int getBookmarkCounts(int attractionId) throws Exception;
+
     void removeBookmark(int attractionId, int userCode) throws Exception;
 
 }

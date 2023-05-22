@@ -14,6 +14,8 @@ public interface AttractionDAO {
 
     List<Attraction> findAllByFilter(AttractionFilter attractionFilter);
 
+    List<Attraction> findByBookmarkCountDesc();
+
     List<Gugun> findGugunNamesBySidoCode(int sidoCode);
 
 }

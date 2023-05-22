@@ -17,6 +17,13 @@
         limit 100
     </select>
 
+    <select id="findByBookmarkCountDesc" resultType="Attraction">
+        select a.attraction_id, a.type_id, a.title, a.address, a.image, a.sido_code, a.gugun_code, a.latitude, a.longitude, a.overview
+        from (select attraction_id from bookmark group by attraction_id order by count(*) desc) b
+        left join attraction a on b.attraction_id = a.attraction_id
+        limit 5;
+    </select>
+
     <select id="findGugunNamesBySidoCode" resultType="Gugun">
         select gugun_code, gugun_name
         from gugun

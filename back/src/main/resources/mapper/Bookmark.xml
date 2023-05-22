@@ -21,6 +21,12 @@
         where attraction_id = #{attractionId} and user_code = #{userCode}
     </select>
 
+    <select id="countByAttractionId" resultType="Integer">
+        select count(*)
+        from bookmark
+        where attraction_id = #{attractionId};
+    </select>
+
     <delete id="deleteByAttractionIdAndUserCode">
         delete from bookmark
         where attraction_id = #{attractionId} and user_code = #{userCode}
