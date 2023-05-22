@@ -14,6 +14,8 @@ public interface PostDAO {
 
     List<Post> findAll();
 
+    List<Post> findAllByKeyword(String keyword);
+
     Post findByPostId(int postId);
 
     void update(Post post);

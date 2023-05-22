@@ -10,6 +10,8 @@ public interface PostService {
 
     List<Post> getPosts() throws Exception;
 
+    List<Post> getPostsWithKeyword(String keyword) throws Exception;
+
     Post getPost(int postId) throws Exception;
 
     void modifyPost(Post post) throws Exception;

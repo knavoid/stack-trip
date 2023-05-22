@@ -15,6 +15,16 @@
         order by p.regtime
     </select>
 
+    <select id="findAllByKeyword" resultType="Post">
+        select p.post_id, p.user_code, u.name, p.subject, p.content, p.type, p.regtime, p.views
+        from post p
+        join user u on p.user_code = u.user_code
+        where name like concat('%', #{keyword}, '%')
+            or subject like concat('%', #{keyword}, '%')
+            or content like concat('%', #{keyword}, '%')
+        order by p.regtime;
+    </select>
+
     <select id="findByPostId" resultType="Post">
         select p.post_id, p.user_code, u.name, p.subject, p.content, p.type, p.regtime, p.views
         from post p
