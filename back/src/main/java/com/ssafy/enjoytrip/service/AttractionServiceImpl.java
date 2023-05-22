@@ -23,6 +23,11 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     @Override
+    public List<Attraction> getTop5Attractions() throws Exception {
+        return attractionDAO.findByBookmarkCountDesc();
+    }
+
+    @Override
     public List<Gugun> getGuguns(int sidoCode) throws Exception {
         return attractionDAO.findGugunNamesBySidoCode(sidoCode);
     }
