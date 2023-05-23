@@ -93,11 +93,6 @@ export default {
     },
     viewArticle(item) {
       console.log(item);
-      http.put(`/post/${item.postId}/views`, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-      });
       this.$router.push(`/board/detail/${item.postId}`);
     },
   },
@@ -105,8 +100,8 @@ export default {
 </script>
 
 <style scoped>
-  #searcharea {
-    width: 300px;
-    margin: 0 auto;
-  }
+#searcharea {
+  width: 300px;
+  margin: 0 auto;
+}
 </style>
