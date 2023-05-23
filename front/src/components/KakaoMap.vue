@@ -9,9 +9,15 @@
       <b-col>
         <div>
           <b-row>
-            <b-col><b-form-select v-model="sidoCode" :options="sidoOptions" value-field="key" text-field="value" class="mb-3"></b-form-select></b-col>
-            <b-col><b-form-select v-model="gugunCode" :options="gugunOptions" value-field="gugunCode" text-field="gugunName" class="mb-3"></b-form-select></b-col>
-            <b-col><b-form-select v-model="contentTypeId" :options="contentOptions" value-field="key" text-field="value" class="mb-3"></b-form-select></b-col>
+            <b-col><b-form-select v-model="sidoCode" :options="sidoOptions" value-field="key" text-field="value" class="mb-3">
+              <b-form-select-option :value="null">시/도</b-form-select-option>
+            </b-form-select></b-col>
+            <b-col><b-form-select v-model="gugunCode" :options="gugunOptions" value-field="gugunCode" text-field="gugunName" class="mb-3">
+              <b-form-select-option :value="null">구/군</b-form-select-option>
+            </b-form-select></b-col>
+            <b-col><b-form-select v-model="contentTypeId" :options="contentOptions" value-field="key" text-field="value" class="mb-3">
+              <b-form-select-option :value="null">관광지 유형</b-form-select-option>
+            </b-form-select></b-col>
           </b-row>
           <b-input-group class="mb-3">
             <b-form-input v-model="title" placeholder="검색어를 입력하세요"></b-form-input>
