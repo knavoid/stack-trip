@@ -87,6 +87,11 @@ export default {
     },
     viewArticle(item) {
       console.log(item);
+      http.put(`/post/${item.postId}/views`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      });
       this.$router.push(`/board/detail/${item.postId}`);
     },
   },
