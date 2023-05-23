@@ -9,7 +9,7 @@
       <b-col class="text-left">
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>
       </b-col>
-      <b-col class="text-right" v-if="article.userCode == userInfo.userCode">
+      <b-col class="text-right" v-if="article.userCode == userCode">
         <b-button
           variant="outline-info"
           size="sm"
@@ -52,9 +52,11 @@ export default {
         userName: "",
         subject: "",
         content: "",
+        type: 0,
         regTime: "",
         views: 0,
       },
+      userCode: 0,
     };
   },
   // computed() {
@@ -63,8 +65,12 @@ export default {
   //   return "";
   // },
   created() {
-    this.getDetail();
-    this.getUserInfo();
+    if (sessionStorage.getItem("token") === null) {
+      this.$router.push("/login");
+    } else {
+      this.getDetail();
+      this.getUserInfo();
+    }
   },
   methods: {
     getDetail() {
@@ -76,10 +82,11 @@ export default {
         })
         .then(({ data }) => {
           this.article = data;
-        })
-        .catch((error) => {
-          console.error(error);
-          this.$router.push("/login");
+          http.put(`/post/${this.article.postId}/views`, null, {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          });
         });
     },
     getUserInfo() {
@@ -90,7 +97,7 @@ export default {
           },
         })
         .then(({ data }) => {
-          this.form.userCode = data.userCode;
+          this.userCode = data.userCode;
         });
     },
     listArticle() {
