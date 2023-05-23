@@ -37,15 +37,49 @@
       striped
       hover
       :items="filteredPosts"
+      :fields="board_fields"
       @row-clicked="viewArticle"
-    ></b-table>
+    >
+      <template #ceil(type)="row">
+        {{ row.item.type }}
+      </template>
+      <template #ceil(subject)="row">
+        {{ row.item.subject }}
+      </template>
+      <template #ceil(userName)="row">
+        {{ row.item.userName }}
+      </template>
+      <template #ceil(regTime)="row">
+        {{ row.item.regTime }}
+      </template>
+      <template #ceil(viewCount)="row">
+        {{ row.item.viewCount }}
+      </template>
+    </b-table>
     <b-table
       v-else
       striped
       hover
       :items="items"
+      :fields="board_fields"
       @row-clicked="viewArticle"
-    ></b-table>
+    >
+    <template #ceil(type)="row">
+        {{ row.item.type }}
+      </template>
+      <template #ceil(subject)="row">
+        {{ row.item.subject }}
+      </template>
+      <template #ceil(userName)="row">
+        {{ row.item.userName }}
+      </template>
+      <template #ceil(regTime)="row">
+        {{ row.item.regTime }}
+      </template>
+      <template #ceil(viewCount)="row">
+        {{ row.item.viewCount }}
+      </template>
+    </b-table>
     <b-input-group id="searcharea" class="mb-3">
       <b-form-input v-model="keyword" placeholder="내용 검색" />
       <b-input-group-append>
@@ -65,6 +99,13 @@ export default {
         { type: 2, name: "이벤트" },
         { type: 3, name: "관광지 후기" },
         { type: 4, name: "자유게시판" },
+      ],
+      board_fields:[
+        {key: 'type', label: '게시판 종류'},
+        {key: 'subject', label: '제목'},
+        {key: 'userName', label:'작성자'},
+        {key: 'regTime', label: '작성시간'},
+        {key: 'viewCount', label: '조회수'},
       ],
       items: [],
       selectedBoard: null,
