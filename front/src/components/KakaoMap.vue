@@ -127,7 +127,6 @@ export default {
     },
   },
   computed:{
-
   },  
   methods: {
     getGugun() {
@@ -149,15 +148,24 @@ export default {
       .then(({data}) => {
         console.log(data);
         this.searchResults = data;
+
+        //기존 마커 제거
+        this.removeMarkers();
+
+        //검색 결과 마커 생성
+        this.createMarkers();
+
+        //검색 결과가 있으면 첫번째 검색 결과로 지도 중심 이동
+        if(this.searchResults.length > 0){
+          const firstResult = this.searchResults[0];
+          const { latitude, longitude } = firstResult;
+          this.map.setCenter(new kakao.maps.LatLng(latitude, longitude));
+        }
+
       }).catch((err) => {
         console.log(err);
       })
-
-      this.searchResults = [
-        {id: 1, name: '검색결과1'},
-        {id: 2, name: '검색결과2'},
-        {id: 3, name: '검색결과3'},
-      ];
+      this.createMarkers();
     },
     handleImageError(result) {
       // 이미지 로딩에 실패한 경우 대체 텍스트 또는 기본 이미지를 설정합니다.
@@ -181,12 +189,6 @@ export default {
       this.map = new kakao.maps.Map(container, options);
     },
     
-    changeSize(size) {
-      const container = document.getElementById("map");
-      container.style.width = `${size}px`;
-      container.style.height = `${size}px`;
-      this.map.relayout();
-    },
     displayMarker(markerPositions) {
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
@@ -213,26 +215,20 @@ export default {
         this.map.setBounds(bounds);
       }
     },
-    displayInfoWindow() {
-      if (this.infowindow && this.infowindow.getMap()) {
-        //이미 생성한 인포윈도우가 있기 때문에 지도 중심좌표를 인포윈도우 좌표로 이동시킨다.
-        this.map.setCenter(this.infowindow.getPosition());
-        return;
-      }
-
-      var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwPosition = new kakao.maps.LatLng(33.450701, 126.570667), //인포윈도우 표시 위치입니다
-        iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-      this.infowindow = new kakao.maps.InfoWindow({
-        map: this.map, // 인포윈도우가 표시될 지도
-        position: iwPosition,
-        content: iwContent,
-        removable: iwRemoveable,
-      });
-
-      this.map.setCenter(iwPosition);
+    removeMarkers(){
+      this.markers.forEach((marker) => marker.setMap(null));
+      this.markers = [];
     },
+    createMarker(latitude, longitude){
+      const marker = new kakao.maps.Marker({
+        map: this.map,
+        position: new kakao.maps.LatLng(latitude, longitude),
+      });
+      marker.setMap(this.map);
+      this.markers.push(marker);
+    },
+    
+    //사용자 위치 받아오는 함수 : 수정 필요
     getCurrentPosition(){
       if(!navigator.geolocation){
         this.setAlert('위치 정보를 찾을 수 없습니다.');
@@ -251,16 +247,118 @@ export default {
     },
     setAlert(msg){
       console.log(msg);
+    },
+    //여기까지 사용자 위치 받아오는 함수
+
+
+    createMarkers(){
+      this.markers = [];
+
+      const overlayTemplate = (result) => `
+        <div class="custom-overlay">
+          <div class=overlay-header">
+            <button class="close-btn" @click="closeMarker">&times;</button>
+            <button class="add-bookmark" @click="addBookmark">+</button>
+          </div>
+          <div class="overlay-content">
+            <div class="overlay-image">
+              <img src="${result.image}" alt="image" @error="handleImageError(result)" />
+            </div>
+            <div class="overlay-info">
+              <h3 class="overlay-title">${result.title}</h3>
+              <p class="overlay-address">${result.address}</p>
+            </div>
+        </div>
+      `;
+
+      this.searchResults.forEach((result) => {
+        const position = new kakao.maps.LatLng(result.latitude, result.longitude);
+        //const marker = new kakao.maps.Marker({position});
+        const overlayContent = overlayTemplate(result);
+        const overlayContainer = document.createElement("div");
+        overlayContainer.innerHTML = overlayContent;
+
+        const overlay = new kakao.maps.CustomOverlay({
+          content: overlayContent,
+          position,
+          yAnchor: 1,
+        });
+
+        const marker = new kakao.maps.Marker({position});
+
+        kakao.maps.event.addListener(marker, "click", () => {
+          overlay.setMap(this.map);
+        });
+
+        overlayContainer.querySelector(".close-btn").addEventListener("click", () => {
+          overlay.setMap(null);
+        });
+
+        marker.setMap(this.map);
+        this.markers.push(marker);
+      })
     }
+
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-#map {
-  width: 100%;
-  height: 700px;
-}
+
+<style>
+  #map {
+    width: 100%;
+    height: 700px;
+  }
+  .custom-overlay {
+      /* width: 200px; */
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .overlay-header {
+      background-color:gray;
+      display: flex;
+      justify-content: space-between;
+      align-items: left;
+      margin-bottom: 10px;
+    }
+
+    .overlay-header button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .overlay-content {
+      display: flex;
+    }
+
+    .overlay-image {
+      width: 80px;
+      margin-right: 10px;
+    }
+
+    .overlay-image img {
+      width: 100%;
+      height: auto;
+    }
+
+    .overlay-info {
+      flex-grow: 1;
+    }
+
+    .overlay-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .overlay-address {
+      font-size: 14px;
+    }
 
 </style>
