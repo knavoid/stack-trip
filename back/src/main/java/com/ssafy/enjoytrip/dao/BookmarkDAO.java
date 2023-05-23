@@ -12,8 +12,6 @@ public interface BookmarkDAO {
 
     void insert(Bookmark bookmark);
 
-    List<Bookmark> findByUserCode(int userCode);
-
     Bookmark findByAttractionIdAndUserCode(int attractionId, int userCode);
 
     int countByAttractionId(int attractionId);

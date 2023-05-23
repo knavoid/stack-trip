@@ -1,6 +1,8 @@
 package com.ssafy.enjoytrip.controller;
 
+import com.ssafy.enjoytrip.dto.Attraction;
 import com.ssafy.enjoytrip.dto.Bookmark;
+import com.ssafy.enjoytrip.service.AttractionService;
 import com.ssafy.enjoytrip.service.BookmarkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class BookmarkController {
     @Autowired
     private BookmarkService bookmarkService;
 
+    @Autowired
+    private AttractionService attractionService;
+
     @PostMapping
     protected ResponseEntity<Bookmark> createBookmark(@RequestBody Bookmark bookmark) throws Exception {
         bookmarkService.createBookmark(bookmark);
@@ -25,8 +30,8 @@ public class BookmarkController {
     }
 
     @GetMapping("/{userCode}")
-    protected ResponseEntity<List<Bookmark>> getUserBookmarks(@PathVariable int userCode) throws Exception {
-        return ResponseEntity.ok(bookmarkService.getUserBookmarks(userCode));
+    protected ResponseEntity<List<Attraction>> getUserBookmarks(@PathVariable int userCode) throws Exception {
+        return ResponseEntity.ok(attractionService.getBookmarkedAttractions(userCode));
     }
 
     @GetMapping

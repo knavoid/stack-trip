@@ -23,6 +23,11 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     @Override
+    public List<Attraction> getBookmarkedAttractions(int userCode) throws Exception {
+        return attractionDAO.findByUserBookmarks(userCode);
+    }
+
+    @Override
     public List<Attraction> getTop5Attractions() throws Exception {
         return attractionDAO.findByBookmarkCountDesc();
     }
