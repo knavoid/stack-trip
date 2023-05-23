@@ -61,7 +61,7 @@ public class PostController {
         return ResponseEntity.ok(post);
     }
 
-    @PatchMapping("/{postId}/views")
+    @PutMapping("/{postId}/views")
     protected ResponseEntity<?> increasePostViews(@PathVariable int postId) throws Exception {
         Post post = postService.getPost(postId);
         if (post != null) {
