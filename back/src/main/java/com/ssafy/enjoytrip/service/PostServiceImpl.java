@@ -26,6 +26,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> getPostsWithKeyword(String keyword) throws Exception {
+        return postDAO.findAllByKeyword(keyword);
+    }
+
+    @Override
+    public List<Post> getTop5Post() throws Exception {
+        return postDAO.findByViewsDesc();
+    }
+
+    @Override
     public Post getPost(int postId) throws Exception {
         return postDAO.findByPostId(postId);
     }

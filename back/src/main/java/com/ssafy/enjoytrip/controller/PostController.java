@@ -35,6 +35,16 @@ public class PostController {
         return ResponseEntity.ok(postService.getPosts());
     }
 
+    @GetMapping("/list/search")
+    protected ResponseEntity<List<Post>> getPostsWithKeyword(@RequestParam String keyword) throws Exception {
+        return ResponseEntity.ok(postService.getPostsWithKeyword(keyword));
+    }
+
+    @GetMapping("/list/top5")
+    protected ResponseEntity<List<Post>> getTop5Post() throws Exception {
+        return ResponseEntity.ok(postService.getTop5Post());
+    }
+
     @GetMapping("/{postId}")
     protected ResponseEntity<Post> getPost(@PathVariable int postId) throws Exception {
         Post post = postService.getPost(postId);
