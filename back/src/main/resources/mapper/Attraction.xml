@@ -21,7 +21,7 @@
         select *
         from attraction
         where attraction_id in
-        (select attraction_id from bookmark where user_code = 5)
+        (select attraction_id from bookmark where user_code = #{userCode})
     </select>
 
     <select id="findByBookmarkCountDesc" resultType="Attraction">
