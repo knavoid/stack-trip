@@ -1,24 +1,21 @@
 <template>
   <div>
    <div id="body">
-      <b-jumbotron>
-        <template #header>BootstrapVue</template>
+      <div>
+        <b-jumbotron class="jumbotron-with-background" text-variant="white">
+          <template #header>Enjoy<span>Trip</span></template>
 
-        <template #lead>
-          This is a simple hero unit, a simple jumbotron-style component for calling extra attention to
-          featured content or information.
-        </template>
+          <template #lead>
+            지금 <span>EnjoyTrip</span>과 함께 <br/>우리 지역의 관광지를 알아보고 여행을 떠나보세요!
+          </template>
 
-        <hr class="my-4">
+          <hr class="my-4">
 
-        <p>
-          It uses utility classes for typography and spacing to space content out within the larger
-          container.
-        </p>
 
-        <b-button variant="primary" href="#">Do Something</b-button>
-        <b-button variant="success" href="#">Do Something Else</b-button>
-      </b-jumbotron>
+          <router-link to="/signup"><b-button class="mr-3" variant="info">회원가입 하러가기</b-button></router-link>
+          <router-link to="/trip"><b-button class="ml-3" variant="light">여행지 탐색하기</b-button></router-link>
+        </b-jumbotron>
+      </div>
 
       <b-row>
         <b-col cols="6" id="top-five">
@@ -105,14 +102,27 @@ export default {
 </script>
 
 <style scoped>
-#body {
-  margin-right: 5%;
-  margin-left: 5%;
-}
-@media(max-width: 768px) {
   #body {
-    margin-right: 0%;
-    margin-left: 0%;
+    margin-right: 5%;
+    margin-left: 5%;
   }
-}
+  @media(max-width: 768px) {
+    #body {
+      margin-right: 0%;
+      margin-left: 0%;
+    }
+  }
+  .jumbotron-with-background {
+    padding-top: 40px;
+    background-image: url('@/assets/img/trippic1.jpg');
+    background-size: cover;
+    background-position: center;
+    text-align: left;
+  }
+  .jumbotron-with-background span {
+    color: #4ebb6d;
+  }
+  a {
+    text-decoration: none;
+  }
 </style>
