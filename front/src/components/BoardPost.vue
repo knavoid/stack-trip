@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       form: {
-        userCode: 5,
+        userCode: 0,
         userName: "",
         subject: "",
         content: "",
@@ -42,10 +42,16 @@ export default {
       selectedType: "",
     };
   },
+  created() {
+    if (sessionStorage.getItem("token") === null) {
+      this.$router.push("/login");
+    } else {
+      this.getUserInfo();
+    }
+  },
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-
       let err = true;
       if (this.form.subject.length > 0 && this.form.content.length > 0) {
         err = false;
@@ -55,7 +61,6 @@ export default {
         return;
       } else {
         this.form.type = this.types.indexOf(this.selectedType) + 1;
-        console.log(this.form.type);
         alert("글이 등록되었습니다.");
         http
           .post("/post", this.form, {
@@ -67,6 +72,18 @@ export default {
             this.$router.push("/board");
           });
       }
+    },
+    getUserInfo() {
+      http
+        .get(`/user`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        })
+        .then(({ data }) => {
+          this.form.userCode = data.userCode;
+          console.log(this.form.userCode);
+        });
     },
   },
 };
