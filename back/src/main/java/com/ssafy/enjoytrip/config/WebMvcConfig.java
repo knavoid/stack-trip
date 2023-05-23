@@ -18,8 +18,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/post/**").excludePathPatterns("/post/list")
-                .addPathPatterns("/question/**").excludePathPatterns("/question/list")
+                .addPathPatterns("/post/**").excludePathPatterns("/post/list/**")
+                .addPathPatterns("/question/**").excludePathPatterns("/question/list/**")
                 .addPathPatterns("/answer/**")
                 .addPathPatterns("/bookmark/**");
     }
