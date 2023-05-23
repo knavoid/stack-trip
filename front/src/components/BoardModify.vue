@@ -47,11 +47,17 @@ export default {
   },
   methods: {
     getArticle() {
-      http.get(`/post/${this.$route.params.articleno}`).then(({ data }) => {
-        this.form = data;
-        this.selectedType = this.types[this.form.type - 1];
-        console.log(this.selectedType);
-      });
+      http
+        .get(`/post/${this.$route.params.articleno}`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        })
+        .then(({ data }) => {
+          this.form = data;
+          this.selectedType = this.types[this.form.type - 1];
+          console.log(this.selectedType);
+        });
     },
     onSubmit(evt) {
       evt.preventDefault();
