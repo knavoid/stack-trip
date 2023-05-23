@@ -9,12 +9,6 @@
         values (#{bookmarkId}, #{attractionId}, #{userCode})
     </insert>
 
-    <select id="findByUserCode" resultType="Bookmark">
-        select *
-        from bookmark
-        where user_code = #{userCode}
-    </select>
-
     <select id="findByAttractionIdAndUserCode" resultType="Bookmark">
         select *
         from bookmark

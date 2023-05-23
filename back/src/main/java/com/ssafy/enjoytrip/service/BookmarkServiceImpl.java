@@ -21,11 +21,6 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public List<Bookmark> getUserBookmarks(int userCode) throws Exception {
-        return bookmarkDAO.findByUserCode(userCode);
-    }
-
-    @Override
     public boolean isBookmarkExist(int attractionId, int userCode) throws Exception {
         return bookmarkDAO.findByAttractionIdAndUserCode(attractionId, userCode) != null;
     }

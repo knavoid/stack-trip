@@ -17,6 +17,13 @@
         limit 100
     </select>
 
+    <select id="findByUserBookmarks" resultType="Attraction">
+        select *
+        from attraction
+        where attraction_id in
+        (select attraction_id from bookmark where user_code = 5)
+    </select>
+
     <select id="findByBookmarkCountDesc" resultType="Attraction">
         select a.attraction_id, a.type_id, a.title, a.address, a.image, a.sido_code, a.gugun_code, a.latitude, a.longitude, a.overview
         from (select attraction_id from bookmark group by attraction_id order by count(*) desc) b
