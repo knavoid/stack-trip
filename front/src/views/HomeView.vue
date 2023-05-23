@@ -1,53 +1,105 @@
 <template>
   <div>
    <div id="body">
-      <b-jumbotron header="EnjoyTrip">
-        <b-carousel
-          id="carousel1"
-          v-model="slide"
-          controls
-          indicators
-          fade
-          img-width="800"
-          img-height="300"
-          style="text-shadow: 1px 1px 2px #333;"
-        >
-          <b-carousel-slide
-            v-for="(photo, index) in photos"
-            :key="index"
-            :img-src="photo.src"
-            :caption="photo.caption"
-          ></b-carousel-slide>
-        </b-carousel>
+      <b-jumbotron>
+        <template #header>BootstrapVue</template>
+
+        <template #lead>
+          This is a simple hero unit, a simple jumbotron-style component for calling extra attention to
+          featured content or information.
+        </template>
+
+        <hr class="my-4">
+
+        <p>
+          It uses utility classes for typography and spacing to space content out within the larger
+          container.
+        </p>
+
+        <b-button variant="primary" href="#">Do Something</b-button>
+        <b-button variant="success" href="#">Do Something Else</b-button>
       </b-jumbotron>
+
+      <b-row>
+        <b-col cols="6" id="top-five">
+            <h3>TOP5 관광지</h3>
+            <b-table :items="top_attraction" :fields="attraction_fields">
+              <template #cell(image)="row">
+                <img :src="row.item.image" :alt="`사진`" width="100" height="100" />
+              </template>
+              <template #cell(title)="row">
+                {{ row.item.title }}
+              </template>
+              <template #cell(address)="row">
+                {{ row.item.address }}
+              </template>
+            </b-table>
+        </b-col>
+        <b-col cols="6">
+          <h3>HOT 게시글</h3>
+          <b-table :items="top_post" :fields="post_fields">
+            <template #ceil(title)="row">
+              {{ row.item.subject }}
+            </template>
+            <template #ceil(userName)="row">
+              {{ row.item.userName }}
+            </template>
+            <template #ceil(regTime)="row">
+              {{ row.item.regTime }}
+            </template>
+            <template #ceil(views)="row">
+              {{ row.item.views }}
+            </template>
+          </b-table>
+        </b-col>
+      </b-row>
     </div>
   </div>
 </template>
 
 <script>
-
+import http from "@/util/http-common.js";
 
 export default {
-  components: {  },
     name: 'HomeView',
     data() {
     return {
-      slide: 0,
-      photos: [
-        {
-          src: 'https://t1.daumcdn.net/cfile/tistory/993E63475C2916510A',
-          caption: '',
-        },
-        {
-          src: 'https://via.placeholder.com/1024x480?text=Second+slide',
-          caption: 'Second slide',
-        },
-        {
-          src: 'https://via.placeholder.com/1024x480?text=Third+slide',
-          caption: 'Third slide',
-        },
-      ],
+        attraction_fields:[
+          { key: 'image', label: '사진' },
+          { key: 'title', label: '관광지명' },
+          { key: 'address', label: '주소'}
+          ],
+        post_fields:[
+          { key: 'subject', label: '제목'},
+          { key: 'userName', label: '작성자'},
+          { key: 'regTime', label: '작성일'},
+          { key: 'views', label: '조회수'}
+        ],
+        top_attraction:[
+
+        ],
+        top_post:[
+
+        ]
     };
+  },
+  created() {
+    this.getTopAttraction();
+    this.getTopPost();
+  },
+  methods: {
+    getTopAttraction() {
+      http.get(`attraction/top5`).then((response) => {
+        this.top_attraction = response.data;
+        console.log(response.data);
+      });
+    },
+    getTopPost(){
+      http.get(`post/list/top5`)
+        .then((response) => {
+          this.top_post = response.data;
+        })
+    }
   },
 };
 </script>

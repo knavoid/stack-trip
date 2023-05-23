@@ -46,6 +46,12 @@
       :items="items"
       @row-clicked="viewArticle"
     ></b-table>
+    <b-input-group id="searcharea" class="mb-3">
+      <b-form-input v-model="searchQuery" placeholder="내용 검색" />
+      <b-input-group-append>
+        <b-button @click="search" variant="primary">검색</b-button>
+      </b-input-group-append>
+    </b-input-group>
   </div>
 </template>
 
@@ -99,4 +105,8 @@ export default {
 </script>
 
 <style scoped>
+  #searcharea {
+    width: 300px;
+    margin: 0 auto;
+  }
 </style>
