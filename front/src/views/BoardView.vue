@@ -47,7 +47,7 @@
       @row-clicked="viewArticle"
     ></b-table>
     <b-input-group id="searcharea" class="mb-3">
-      <b-form-input v-model="searchQuery" placeholder="내용 검색" />
+      <b-form-input v-model="keyword" placeholder="내용 검색" />
       <b-input-group-append>
         <b-button @click="search" variant="primary">검색</b-button>
       </b-input-group-append>
@@ -66,11 +66,10 @@ export default {
         { type: 3, name: "관광지 후기" },
         { type: 4, name: "자유게시판" },
       ],
-
       items: [],
-
       selectedBoard: null,
       filteredPosts: [],
+      keyword: null,
     };
   },
   created() {
@@ -94,6 +93,13 @@ export default {
     viewArticle(item) {
       console.log(item);
       this.$router.push(`/board/detail/${item.postId}`);
+    },
+    search() {
+      console.log("keyword" + this.keyword);
+      http.get(`/post/list/search?keyword=${this.keyword}`).then(({ data }) => {
+        console.log(data);
+        this.filteredPosts = data;
+      });
     },
   },
 };
