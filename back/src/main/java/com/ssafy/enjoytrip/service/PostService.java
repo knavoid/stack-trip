@@ -12,6 +12,8 @@ public interface PostService {
 
     List<Post> getPostsWithKeyword(String keyword) throws Exception;
 
+    List<Post> getTop5Post() throws Exception;
+
     Post getPost(int postId) throws Exception;
 
     void modifyPost(Post post) throws Exception;
