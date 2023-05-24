@@ -1,15 +1,15 @@
 <template>
   <div class="container">
-    <h1 class="mt-5">QnA 수정</h1>
+    <h2 class="mt-5">질문 수정</h2>
     <b-form @submit="onSubmit">
-      <b-form-group label="내용" label-for="content">
+      <b-form-group label-for="content">
         <b-form-textarea
           id="content"
           v-model="form.content"
           :rows="5"
         ></b-form-textarea>
       </b-form-group>
-      <b-button class="mb-5" type="submit" variant="primary">수정하기</b-button>
+      <b-button class="mb-5" type="submit" variant="primary">수정</b-button>
     </b-form>
   </div>
 </template>
@@ -19,25 +19,42 @@ import http from "@/util/http-common.js";
 export default {
   data() {
     return {
+      userCode: null,
       form: {
-        answers: [],
-        content: "",
         questionId: this.$route.params.articleno,
-        userCode: 5,
+        userCode: 0,
         userName: "",
+        content: "",
       },
     };
   },
   created() {
-    console.log(this.$route.params.articleno);
+    this.getUserInfo();
     this.getArticle();
   },
   methods: {
+    getUserInfo() {
+      http
+        .get(`/user`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        })
+        .then(({ data }) => {
+          this.userCode = data.userCode;
+        });
+    },
     getArticle() {
-      http.get(`/question/${this.$route.params.articleno}`).then(({ data }) => {
-        this.form = data;
-        console.log(data);
-      });
+      http
+        .get(`/question/${this.$route.params.articleno}`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        })
+        .then(({ data }) => {
+          this.form = data;
+          console.log(data);
+        });
     },
     onSubmit(evt) {
       evt.preventDefault();
@@ -50,7 +67,7 @@ export default {
         alert("내용을 입력해주세요.");
         return;
       } else {
-        alert("글이 등록되었습니다.");
+        alert("질문이 수정되었습니다.");
         http
           .put(`/question/${this.$route.params.articleno}`, this.form, {
             headers: {

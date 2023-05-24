@@ -1,15 +1,15 @@
 <template>
   <div class="container">
-    <h1 class="mt-5">QnA 작성</h1>
+    <h2 class="mt-5">질문 작성</h2>
     <b-form @submit="onSubmit">
-      <b-form-group label="내용" label-for="content">
+      <b-form-group label-for="content">
         <b-form-textarea
           id="content"
           v-model="form.content"
           :rows="5"
         ></b-form-textarea>
       </b-form-group>
-      <b-button class="mb-5" type="submit" variant="primary">글쓰기</b-button>
+      <b-button class="mb-5" type="submit" variant="primary">등록</b-button>
     </b-form>
   </div>
 </template>
@@ -19,14 +19,31 @@ import http from "@/util/http-common.js";
 export default {
   data() {
     return {
+      userCode: null,
+      userName: null,
       form: {
-        userCode: 5,
-        userName: "김성훈",
+        userCode: 0,
+        userName: "",
         content: "",
       },
     };
   },
+  created() {
+    this.getUserInfo();
+  },
   methods: {
+    getUserInfo() {
+      http
+        .get(`/user`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        })
+        .then(({ data }) => {
+          this.userCode = data.userCode;
+          this.userName = data.name;
+        });
+    },
     onSubmit(evt) {
       evt.preventDefault();
 
@@ -38,7 +55,9 @@ export default {
         alert("내용을 입력해주세요.");
         return;
       } else {
-        alert("글이 등록되었습니다.");
+        this.form.userCode = this.userCode;
+        this.form.userName = this.userName;
+        console.log(this.form);
         http
           .post("/question", this.form, {
             headers: {
@@ -48,6 +67,7 @@ export default {
           .then(() => {
             this.$router.push("/qna");
           });
+        alert("글이 등록되었습니다.");
       }
     },
   },
