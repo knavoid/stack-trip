@@ -75,6 +75,22 @@ const routes = [
         name: "qnamodify",
         component: () => import("@/components/QnAModify.vue"),
     },
+    {
+        path: "/plan",
+        name: "plan",
+        component: () => import("@/views/PlanView.vue"),
+    },
+    {
+        path: "/plan/detail",
+        name: "plandetail",
+        component: () => import("@/components/PlanDetail.vue")
+    },
+    {
+        path: "/plan/post",
+        name: "planpost",
+        component: () => import("@/components/ShowPlanPost.vue")
+    }
+
 ];
 
 const router = new VueRouter({
