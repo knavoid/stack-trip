@@ -7,26 +7,37 @@
     </b-row>
     <b-row class="mb-1">
       <b-col class="text-left">
-        <b-button variant="outline-primary" @click="listArticle">목록</b-button>
+        <b-button
+          variant="outline-primary"
+          @click="listArticle"
+          v-b-tooltip.hover
+          title="목록으로"
+          ><b-icon icon="list"></b-icon
+        ></b-button>
       </b-col>
       <b-col class="text-right" v-if="article.userCode == userCode">
         <b-button
           variant="outline-info"
-          size="sm"
+          size="m"
           @click="moveModifyArticle"
           class="mr-2"
-          >글수정</b-button
-        >
-        <b-button variant="outline-danger" size="sm" @click="deleteArticle"
-          >글삭제</b-button
-        >
+          v-b-tooltip.hover
+          title="글 수정하기"
+          ><b-icon icon="pencil-square"></b-icon
+        ></b-button>
+        <b-button
+          variant="outline-danger"
+          size="m"
+          @click="deleteArticle"
+          title="질문 삭제하기"
+          ><b-icon icon="trash"></b-icon
+        ></b-button>
       </b-col>
     </b-row>
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${article.postId}.
-                ${article.subject} [${article.views}]</h3><div><h6>${article.userName}</div><div>${article.regTime}</h6></div>`"
+          :header-html="`<h3>${article.subject} (${article.views})</h3><div><h6>작성자: ${article.userName}</div><div>${article.regTime}</h6></div>`"
           class="mb-2"
           border-variant="dark"
           no-body

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <h1 class="mb-4">여행지 게시판</h1>
+      <h1 class="mb-4">Community</h1>
       <b-row>
         <b-col>
           <b-button
@@ -22,12 +22,17 @@
           >
         </b-col>
         <b-col
-          ><b-button variant="dark" size="big"
-            ><router-link class="text-white" to="/board/posting"
-              >글쓰기</router-link
-            ></b-button
-          ></b-col
-        >
+          ><b-button
+            variant="dark"
+            size="big"
+            v-b-tooltip.hover
+            title="질문하기"
+          >
+            <router-link class="text-white" to="/board/posting">
+              <b-icon icon="pen"></b-icon>
+            </router-link>
+          </b-button>
+        </b-col>
       </b-row>
     </div>
 
@@ -40,21 +45,6 @@
       :fields="board_fields"
       @row-clicked="viewArticle"
     >
-      <template #ceil(type)="row">
-        {{ row.item.type }}
-      </template>
-      <template #ceil(subject)="row">
-        {{ row.item.subject }}
-      </template>
-      <template #ceil(userName)="row">
-        {{ row.item.userName }}
-      </template>
-      <template #ceil(regTime)="row">
-        {{ row.item.regTime }}
-      </template>
-      <template #ceil(viewCount)="row">
-        {{ row.item.viewCount }}
-      </template>
     </b-table>
     <b-table
       v-else
@@ -64,21 +54,6 @@
       :fields="board_fields"
       @row-clicked="viewArticle"
     >
-    <template #ceil(type)="row">
-        {{ row.item.type }}
-      </template>
-      <template #ceil(subject)="row">
-        {{ row.item.subject }}
-      </template>
-      <template #ceil(userName)="row">
-        {{ row.item.userName }}
-      </template>
-      <template #ceil(regTime)="row">
-        {{ row.item.regTime }}
-      </template>
-      <template #ceil(viewCount)="row">
-        {{ row.item.viewCount }}
-      </template>
     </b-table>
     <b-input-group id="searcharea" class="mb-3">
       <b-form-input v-model="keyword" placeholder="내용 검색" />
@@ -97,15 +72,15 @@ export default {
       boards: [
         { type: 1, name: "공지사항" },
         { type: 2, name: "이벤트" },
-        { type: 3, name: "관광지 후기" },
+        { type: 3, name: "여행 후기" },
         { type: 4, name: "자유게시판" },
       ],
-      board_fields:[
-        {key: 'type', label: '게시판 종류'},
-        {key: 'subject', label: '제목'},
-        {key: 'userName', label:'작성자'},
-        {key: 'regTime', label: '작성시간'},
-        {key: 'viewCount', label: '조회수'},
+      board_fields: [
+        { key: "type", label: "구분" },
+        { key: "userName", label: "작성자" },
+        { key: "subject", label: "제목" },
+        { key: "regTime", label: "작성일자" },
+        { key: "views", label: "조회수" },
       ],
       items: [],
       selectedBoard: null,
@@ -117,6 +92,7 @@ export default {
     http.get("/post/list").then(({ data }) => {
       console.log(data);
       this.items = data;
+      console.log(this.items);
     });
   },
   methods: {
