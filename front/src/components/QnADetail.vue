@@ -1,32 +1,41 @@
 <template>
   <b-container class="bv-example-row mt-3">
-    <b-row>
-      <b-col>
-        <b-alert show><h3>글보기</h3></b-alert>
-      </b-col>
-    </b-row>
     <b-row class="mb-1">
       <b-col class="text-left">
-        <b-button variant="outline-primary" @click="listArticle">목록</b-button>
+        <b-button
+          variant="outline-primary"
+          v-b-tooltip.hover
+          title="목록으로"
+          @click="listArticle"
+          ><b-icon icon="list"></b-icon
+        ></b-button>
       </b-col>
-      <b-col class="text-right">
+      <b-col class="text-right" v-if="article.userCode == userCode">
         <b-button
           variant="outline-info"
-          size="sm"
+          size="m"
           @click="moveModifyArticle"
           class="mr-2"
-          >글수정</b-button
+          v-b-tooltip.hover
+          title="질문 수정하기"
         >
-        <b-button variant="outline-danger" size="sm" @click="deleteArticle"
-          >글삭제</b-button
+          <b-icon icon="pencil-square"></b-icon>
+        </b-button>
+        <b-button
+          variant="outline-danger"
+          size="m"
+          @click="deleteArticle"
+          v-b-tooltip.hover
+          title="질문 삭제하기"
         >
+          <b-icon icon="trash"></b-icon>
+        </b-button>
       </b-col>
     </b-row>
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${article.questionId}번 질문글
-                </h3><div><h6>사용자 코드: ${article.userCode}</div><div>작성시간: ${article.regTime}</h6></div>`"
+          :header-html="`<div><h5>${article.userName}님의 질문</div><div>${article.regTime}</h5></div>`"
           class="mb-2"
           border-variant="dark"
           no-body
@@ -37,23 +46,21 @@
         </b-card>
       </b-col>
     </b-row>
-    <hr />
     <b-form @submit="onSubmitAnswer">
-      <b-form-group class="text-left" label="댓글달기" label-for="content">
+      <b-form-group class="text-left" label-for="content">
         <b-form-textarea
           id="content"
           v-model="newAnswer.content"
           :rows="5"
         ></b-form-textarea>
       </b-form-group>
-      <b-button class="" type="submit" variant="primary">댓글달기</b-button>
+      <b-button class="" type="submit" variant="primary">답변등록</b-button>
     </b-form>
     <hr />
     <div>
-      <h6 class="text-left">댓글</h6>
       <div v-for="answer in article.answers" :key="answer.answerId">
         <b-card
-          :header-html="`<span>작성자: ${answer.userName}</span><br/><span>작성시간:${answer.regTime}</span>`"
+          :header-html="`<span>${answer.userName}님의 답변</span><br/><span>${answer.regTime}</span>`"
           class="text-left mb-2"
           border-variant="dark"
           no-body
@@ -63,6 +70,8 @@
           </b-card-body>
 
           <b-button
+            v-if="answer.userCode == userCode"
+            id="delete-answer-button"
             variant="outline-danger"
             size="sm"
             @click="DeleteAnswer(answer)"
@@ -80,6 +89,7 @@ export default {
   name: "BoardDetail",
   data() {
     return {
+      userCode: null,
       article: {
         questionId: 0,
         userCode: 0,
@@ -89,18 +99,29 @@ export default {
       },
       newAnswer: {
         questionId: this.$route.params.articleno,
-        userCode: 5,
+        userCode: 0,
         content: "",
       },
     };
   },
 
   created() {
+    this.getUserInfo();
     this.getDetail();
   },
   methods: {
+    getUserInfo() {
+      http
+        .get(`/user`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        })
+        .then(({ data }) => {
+          this.userCode = data.userCode;
+        });
+    },
     getDetail() {
-      // axios로 해당 board_id에 해당하는 article을 가져온다.
       http
         .get(`/question/${this.$route.params.articleno}`, {
           headers: {
@@ -110,6 +131,9 @@ export default {
         .then(({ data }) => {
           this.article = data;
           console.log(data);
+        })
+        .catch(() => {
+          this.$router.push("/login");
         });
       // console.log(this.article);
     },
@@ -121,7 +145,7 @@ export default {
     },
     deleteArticle() {
       //여기에 article을 삭제하는 함수를 구현한다.
-      console.log(`삭제 ${this.$route.params.articleno}`);
+      alert("질문이 삭제되었습니다.");
       http
         .delete(`/question/${this.$route.params.articleno}`, {
           headers: {
@@ -134,6 +158,7 @@ export default {
     },
     onSubmitAnswer(evt) {
       evt.preventDefault();
+      this.newAnswer.userCode = this.userCode;
       console.log(this.newAnswer);
       let err = true;
       if (this.newAnswer.content.length >= 1) {
@@ -163,6 +188,7 @@ export default {
       }
     },
     DeleteAnswer(answer) {
+      alert("답변이 삭제되었습니다.");
       http
         .delete(`/answer/${answer.answerId}`, {
           headers: {
@@ -178,4 +204,9 @@ export default {
 </script>
 
 <style>
+#delete-answer-button {
+  width: 50px;
+  align-self: center;
+  margin-bottom: 10px;
+}
 </style>
