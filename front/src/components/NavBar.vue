@@ -42,8 +42,8 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item v-if="user">
             <span>{{ user.name }}님 안녕하세요 </span>
-            <b-button pill variant="success"><router-link to="/profile">마이 페이지</router-link></b-button>
-            <b-button pill variant="warning" @click="deleteToken">로그아웃</b-button>
+            <b-button class="mr-1 ml-1" pill variant="success"><router-link to="/profile">마이 페이지</router-link></b-button>
+            <b-button class="mr-1 ml-1" pill variant="warning" @click="deleteToken">로그아웃</b-button>
           </b-nav-item>
           <b-button v-else pill variant="success"><router-link to="/login">로그인</router-link></b-button>
         </b-navbar-nav>
