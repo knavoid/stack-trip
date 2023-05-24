@@ -6,8 +6,8 @@
       <b-col cols="8">
         <div id="map"></div>
       </b-col>
-      <b-col>
-        <div>
+      <b-col style="position:relative; height:700px; overflow-y:auto">
+        <div >
           <b-row>
             <b-col><b-form-select v-model="sidoCode" :options="sidoOptions" value-field="key" text-field="value" class="mb-3">
               <b-form-select-option :value="null">시/도</b-form-select-option>
@@ -34,7 +34,7 @@
               </b-col>
               <b-col>
                 <b-list-group>
-                  <b-list-group-item>
+                  <b-list-group-item @click="moveCenter(result.latitude, result.longitude)">
                     <b-row align-v="center">
                       <b-col cols="auto">
                         <strong>{{ result.title }}</strong>
@@ -61,6 +61,7 @@ export default {
   name: "KakaoMap",
   data() {
     return {
+      userCode: null,
       currPosition: {
         latitude: null,
         longitude: null,
@@ -105,7 +106,7 @@ export default {
       sidoCode: null,
       gugunCode: null,
       contentTypeId: null,
-      title: "",
+      title: null,
       searchResults: [],
     };
   },
@@ -135,9 +136,66 @@ export default {
   computed:{
   },  
   methods: {
+    addBookmark(result){
+      console.log(result);
+      console.log(result.attractionId);
+      http
+      .get(`/user`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      })
+      .then(({ data }) => {
+        this.userCode = data.userCode;
+        console.log(this.userCode);
+        data = {
+          attractionId: result.attractionId,
+          userCode: this.userCode,
+        };
+        console.log(data);
+        if(this.userCode != null){
+            http.get(`/bookmark`, {
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+              },
+              params:{
+                attractionId: result.attractionId,
+                userCode: this.userCode,
+              }
+            })
+            .then((response) => {
+              console.log(response.data);
+              if(response.data == true){
+                alert("이미 북마크에 추가된 관광지입니다.");
+              }else{
+                http.post(`/bookmark`, data, {            
+                headers:{
+                  Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                }
+                })
+                .then(() => {
+                  alert("북마크에 추가되었습니다.");
+                })
+                .catch((err) => {
+                  console.log("북마크 추가 중 오류가 발생했습니다." + err);
+                });
+              }
+            })
+        }
+        })
+        .catch((err) => {
+          console.log("유저 정보를 가져오던 중 오류가 발생했습니다." + err);
+          alert("북마크는 로그인 후 이용 가능합니다.");
+        });
+        
+    },
     getGugun() {
       if (this.sidoCode) {
-      http.get(`attraction/gugun?sidoCode=${this.sidoCode}`)
+      http.get(`attraction/gugun`,{
+        params:{
+          sidoCode: this.sidoCode,
+        }
+      })
         .then(({ data }) => {
           console.log(data);
           this.gugunOptions = data;
@@ -150,7 +208,14 @@ export default {
     return this.gugunOptions;
     },
     search(){
-      http.get(`attraction?sidoCode=${this.sidoCode}&gugunCode=${this.gugunCode}&contentTypeId=${this.contentTypeId}&title=${this.title}`)
+      http.get(`attraction`,{
+        params:{
+          sidoCode: this.sidoCode,
+          gugunCode: this.gugunCode,
+          contentTypeId: this.contentTypeId,
+          title: this.title,
+        }
+      })
       .then(({data}) => {
         console.log(data);
         this.searchResults = data;
@@ -260,33 +325,75 @@ export default {
     createMarkers(){
       this.markers = [];
 
-      const overlayTemplate = (result) => `
-        <div class="custom-overlay">
-          <div class=overlay-header">
-            <button class="close-btn" @click="closeMarker">&times;</button>
-            <button class="add-bookmark" @click="addBookmark">+</button>
-          </div>
-          <div class="overlay-content">
-            <div class="overlay-image">
-              <img src="${result.image}" alt="image" @error="handleImageError(result)" />
-            </div>
-            <div class="overlay-info">
-              <h3 class="overlay-title">${result.title}</h3>
-              <p class="overlay-address">${result.address}</p>
-            </div>
-        </div>
-      `;
-
       this.searchResults.forEach((result) => {
         const position = new kakao.maps.LatLng(result.latitude, result.longitude);
-        //const marker = new kakao.maps.Marker({position});
-        const overlayContent = overlayTemplate(result);
-        const overlayContainer = document.createElement("div");
-        overlayContainer.innerHTML = overlayContent;
 
-        const overlay = new kakao.maps.CustomOverlay({
-          content: overlayContent,
-          position,
+        var overlayContainer = document.createElement("div");
+        overlayContainer.className = "custom-overlay";
+
+        var header = document.createElement("div");
+        header.className = "overlay-header";
+        var closeBtn = document.createElement("button");
+        closeBtn.className = "close-btn";
+        closeBtn.innerHTML = "&times;";
+        var addBookmarkBtn = document.createElement("button");
+        addBookmarkBtn.className = "add-bookmark";
+        addBookmarkBtn.innerHTML = '❤';
+
+        closeBtn.addEventListener("click", () => {
+          overlay.setMap(null);
+        });
+
+        addBookmarkBtn.addEventListener("click", () => {
+          //북마크 추가 메소드 구현
+          this.addBookmark(result);
+        });
+
+        header.appendChild(closeBtn);
+        header.appendChild(addBookmarkBtn);
+
+        overlayContainer.appendChild(header);
+
+        var overlayContent = document.createElement("div");
+        overlayContent.className = "overlay-content";
+
+        var overlayImage = document.createElement("div"); 
+        overlayImage.className = "overlay-image";
+
+        var image = document.createElement("img");
+        image.className = "overlay-image";
+        if(result.image == ''){
+          image.src = "https://eumseongcci.korcham.net/images/no-image01.gif";
+        }else{
+          image.src = result.image;
+        }
+        
+        image.alt = "image";
+        overlayImage.appendChild(image);
+
+        var br = document.createElement("br");
+
+        var overlayInfo = document.createElement("div");
+        overlayInfo.className = "overlay-info";
+
+        var overlayTitle = document.createElement("h3");
+        overlayTitle.className = "overlay-title";
+        overlayTitle.innerHTML = result.title;
+        var overlayAddress = document.createElement("p");
+        overlayAddress.className = "overlay-address";
+        overlayAddress.innerHTML = result.address;
+
+        overlayInfo.appendChild(overlayTitle);
+        overlayInfo.appendChild(overlayAddress);
+
+        overlayContent.appendChild(overlayImage);
+        overlayContent.appendChild(br);
+        overlayContent.appendChild(overlayInfo);
+        overlayContainer.appendChild(overlayContent);
+
+        var overlay = new kakao.maps.CustomOverlay({
+          content: overlayContainer,
+          position: new kakao.maps.LatLng(result.latitude, result.longitude),
           yAnchor: 1,
         });
 
@@ -296,14 +403,14 @@ export default {
           overlay.setMap(this.map);
         });
 
-        overlayContainer.querySelector(".close-btn").addEventListener("click", () => {
-          overlay.setMap(null);
-        });
-
         marker.setMap(this.map);
         this.markers.push(marker);
       })
-    }
+    },
+    moveCenter(latitude, longitude){
+      const moveLatLon = new kakao.maps.LatLng(latitude, longitude);
+      this.map.panTo(moveLatLon);
+    },
 
   },
 };
@@ -316,8 +423,8 @@ export default {
     height: 700px;
   }
   .custom-overlay {
-      /* width: 200px; */
-      padding: 10px;
+      width: 100%;
+      /* padding: 10px; */
       background-color: #fff;
       border: 1px solid #ccc;
       box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
@@ -333,24 +440,19 @@ export default {
 
     .overlay-header button {
       background-color: transparent;
-      border: none;
+      /* border: none; */
       cursor: pointer;
       font-size: 14px;
       font-weight: bold;
     }
 
     .overlay-content {
-      display: flex;
+      /* display: flex; */
+      margin: 1vh;
     }
 
     .overlay-image {
-      width: 80px;
-      margin-right: 10px;
-    }
-
-    .overlay-image img {
-      width: 100%;
-      height: auto;
+      width: 20em;
     }
 
     .overlay-info {
@@ -366,5 +468,7 @@ export default {
     .overlay-address {
       font-size: 14px;
     }
+
+    
 
 </style>
