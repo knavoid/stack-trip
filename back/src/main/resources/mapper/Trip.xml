@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.enjoytrip.dao.TripDAO">
+
+    <insert id="insert">
+        insert into trip(user_code, title, description, begin_date, end_date)
+        value (#{userCode}, #{title}, #{description}, #{beginDate}, #{endDate})
+    </insert>
+
+    <select id="findAllByUserCode" resultType="Trip">
+        select *
+        from trip
+        where user_code = #{userCode}
+    </select>
+
+    <select id="findByTripId" resultType="Trip">
+        select *
+        from trip
+        where trip_id = #{tripId}
+    </select>
+
+    <delete id="deleteByTripId">
+        delete from trip
+        where trip_id = #{tripId}
+    </delete>
+
+</mapper>

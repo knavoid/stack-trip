@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.enjoytrip.dao.PlanDAO">
+
+    <insert id="insert">
+        insert into plan(trip_id, attraction_id, date, `order`)
+        value(#{tripId}, #{attractionId}, #{date}, #{order})
+    </insert>
+
+    <select id="findAllByTripId" resultType="Plan">
+        select *
+        from plan
+        where trip_id = #{tripId}
+    </select>
+
+    <update id="update">
+        update plan
+        set date = #{date}, `order` = #{order}
+        where plan_id = #{planId}
+    </update>
+
+    <delete id="deleteByPlanId">
+        delete from plan
+        where plan_id = #{planId}
+    </delete>
+
+</mapper>
