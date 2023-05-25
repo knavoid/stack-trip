@@ -3,17 +3,17 @@
    <div id="body">
       <div>
         <b-jumbotron class="jumbotron-with-background" text-variant="white">
-          <template #header>Enjoy<span>Trip</span></template>
+          <template #header><span>Stack</span>Trip</template>
 
           <template #lead>
-            지금 <span>EnjoyTrip</span>과 함께 <br/>우리 지역의 관광지를 알아보고 여행을 떠나보세요!
+            지금 <span>StackTrip</span>과 함께 <br/>우리 지역의 관광지를 알아보고 여행을 떠나보세요!
           </template>
 
           <hr class="my-4">
 
 
-          <router-link to="/signup"><b-button class="mr-3" variant="info">회원가입 하러가기</b-button></router-link>
-          <router-link to="/trip"><b-button class="ml-3" variant="light">여행지 탐색하기</b-button></router-link>
+          <!-- <router-link to="/signup"><b-button class="mr-3" variant="info">회원가입 하러가기</b-button></router-link> -->
+          <router-link to="/trip"><b-button class="ml-3" variant="info">여행지 탐색하기</b-button></router-link>
         </b-jumbotron>
       </div>
 
@@ -102,16 +102,6 @@ export default {
 </script>
 
 <style scoped>
-  #body {
-    margin-right: 5%;
-    margin-left: 5%;
-  }
-  @media(max-width: 768px) {
-    #body {
-      margin-right: 0%;
-      margin-left: 0%;
-    }
-  }
   .jumbotron-with-background {
     padding-top: 40px;
     background-image: url('@/assets/img/trippic1.jpg');

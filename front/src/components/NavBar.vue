@@ -1,9 +1,9 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand>
+    <b-navbar toggleable="lg" type="dark" variant="dark faded">
+      <b-navbar-brand >
         <router-link to="/">
-          <img src="@/assets/img/logo-removebg-preview.png" alt="">
+          <img id="logo" src="@/assets/img/stacktrip-removebg.png" alt="">
         </router-link>
       </b-navbar-brand>
 
@@ -111,7 +111,7 @@ export default {
 
 <style>
 #logo {
-  width: 8%;
+  width: 60%;
 }
 img {
   width: 80%;
@@ -119,6 +119,9 @@ img {
 nav a.router-link-exact-active {
   color: #ffffff;
   text-decoration: none;
+}
+.navbar-brand{
+  width:200px;
 }
 
 </style>
