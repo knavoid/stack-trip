@@ -2,17 +2,7 @@
   <div class="container">
     <h1>계획 세우기</h1>
     <hr>
-    <b-row>
-      <b-form-input class="mb-3" v-model="plans.title" placeholder="검색어를 입력하세요"></b-form-input>
-      <b-col class="pl-0 pr-1">
-        <label for="start-datepicker">시작 날짜를 입력하세요</label>
-        <b-form-datepicker id="start-datepicker" v-model="plans.begin_date" class="mb-2"></b-form-datepicker>
-      </b-col>
-      <b-col class="pl-1 pr-0">
-        <label for="end-datepicker">종료 날짜를 입력하세요</label>
-        <b-form-datepicker id="end-datepicker" v-model="plans.end_date" class="mb-2"></b-form-datepicker>
-      </b-col>
-    </b-row>
+    
     <hr class="md-5">
     <b-row class="mb-3">
       <b-col>
@@ -111,12 +101,10 @@ export default {
     }
   },
   watch:{
-    sidoCode:{
-      handler(newSidoCode){
-        this.getGugun(newSidoCode);
-      },
-      immediate: true,
-    },
+    searchResults(){
+      this.removeMarkers();
+      this.createMarkers();
+    }
   },
   computed:{
   },  
@@ -174,24 +162,7 @@ export default {
         });
         
     },
-    getGugun() {
-      if (this.sidoCode) {
-      http.get(`attraction/gugun`,{
-        params:{
-          sidoCode: this.sidoCode,
-        }
-      })
-        .then(({ data }) => {
-          console.log(data);
-          this.gugunOptions = data;
-        }).catch((err) => {
-          console.log(err);
-        })
-    } else {
-      this.gugunOptions = [];
-    }
-    return this.gugunOptions;
-    },
+
     search(){
       http.get(`attraction`,{
         params:{

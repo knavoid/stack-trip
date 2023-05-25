@@ -1,17 +1,17 @@
 <template>
   <div id="container">
-    <detail-map />
+    <h3>여기에 대충 디테일 어쩌구</h3>
   </div>
 </template>
 
 <script>
-import DetailMap from "@/components/PlanDetailMap.vue";
+
 
 export default {
   name: "PlanDetail",
   components: {
-    DetailMap
-    ,
+    
+    
   },
 };
 </script>
