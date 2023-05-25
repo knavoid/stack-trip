@@ -132,6 +132,10 @@ export default {
       },
       immediate: true,
     },
+    searchResults(){
+      this.removeMarkers();
+      this.createMarkers();
+    }
   },
   computed:{
   },  
@@ -417,13 +421,14 @@ export default {
 </script>
 
 
-<style>
+<style scope>
   #map {
     width: 100%;
     height: 700px;
   }
   .custom-overlay {
       width: 100%;
+      height: 100%;
       /* padding: 10px; */
       background-color: #fff;
       border: 1px solid #ccc;
@@ -452,7 +457,9 @@ export default {
     }
 
     .overlay-image {
-      width: 20em;
+      width: 14em;
+      /* height: 200px; */
+      object-fit: cover;
     }
 
     .overlay-info {
