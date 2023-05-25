@@ -86,7 +86,7 @@ const routes = [
         component: () => import("@/components/PlanDetail.vue")
     },
     {
-        path: "/plan/post",
+        path: "/plan/post/:articleno",
         name: "planpost",
         component: () => import("@/components/ShowPlanPost.vue")
     }

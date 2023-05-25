@@ -12,6 +12,7 @@
     "bootstrap": "^4.6.1",
     "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
+    "moment": "^2.29.4",
     "vue": "^2.7.14",
     "vue-geolocation-api": "^0.1.21",
     "vue-router": "^3.5.1",

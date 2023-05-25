@@ -85,13 +85,18 @@ created() {
     this.getPlanList();
 },
 methods: {
-    movePage() {
-    console.log("plan 만들기로 이동");
-    },
     onSubmit(evt) {
         evt.preventDefault();
         // 여행 계획 만들기 기능을 구현하고자 하는 경우에는 해당 부분을 추가로 작성하세요.
         console.log(this.newTrip);
+        this.newTrip.userCode = this.userCode;
+        console.log(JSON.stringify(this.newTrip));
+        http.post(`/trip`, JSON.stringify(this.newTrip))
+        .then(({ data }) => {
+            console.log(data);
+            // this.$router.push(`/plan/post/${data.tripId}`);
+            window.location.reload();
+        })
     },
     getPlanList() {
     http
@@ -117,14 +122,14 @@ methods: {
             });
         })
         .catch((error) => {
-        alert("로그인이 필요한 서비스입니다.");
-        this.$router.push("/login");
-        console.log("유저정보 로드 실패" + error);
+            alert("로그인이 필요한 서비스입니다.");
+            this.$router.push("/login");
+            console.log("유저정보 로드 실패" + error);
         });
     },
     moveToPosting(item) {
         console.log(item);
-        this.$router.push(`/plan/post/${item.id}`);
+        this.$router.push(`/plan/post/${item.tripId}`);
 
     },
 },
@@ -132,9 +137,9 @@ methods: {
 </script>
 
 <style scoped>
-label {
-font-size: 1.2rem;
-font-weight: bold;
-}
+    label {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
 </style>
   
