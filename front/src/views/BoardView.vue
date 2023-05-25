@@ -76,7 +76,6 @@ export default {
         { type: 4, name: "자유게시판" },
       ],
       board_fields: [
-        { key: "type", label: "구분" },
         { key: "userName", label: "작성자" },
         { key: "subject", label: "제목" },
         { key: "regTime", label: "작성일자" },

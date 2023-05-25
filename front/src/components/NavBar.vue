@@ -1,9 +1,9 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark faded">
-      <b-navbar-brand >
+      <b-navbar-brand>
         <router-link to="/">
-          <img id="logo" src="@/assets/img/stacktrip-removebg.png" alt="">
+          <img id="logo" src="@/assets/img/stacktrip-removebg.png" alt="" />
         </router-link>
       </b-navbar-brand>
 
@@ -12,29 +12,19 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item>
-            <router-link to="/trip">
-              여행지 탐색
-            </router-link>
+            <router-link to="/trip"> ATTRACTION </router-link>
           </b-nav-item>
           <b-nav-item>
-            <router-link to="/board">
-              여행지 게시판
-            </router-link>
+            <router-link to="/bookmark"> FAVORITES </router-link>
           </b-nav-item>
           <b-nav-item>
-            <router-link to="/bookmark">
-              가고싶은 여행지
-            </router-link>
+            <router-link to="/plan"> TRIP PLAN </router-link>
           </b-nav-item>
           <b-nav-item>
-            <router-link to="/plan">
-              여행 계획
-            </router-link>
+            <router-link to="/board"> COMMUNITY </router-link>
           </b-nav-item>
           <b-nav-item>
-            <router-link to="/qna">
-              QnA 게시판
-            </router-link>
+            <router-link to="/qna"> Q&A </router-link>
           </b-nav-item>
         </b-navbar-nav>
 
@@ -42,10 +32,20 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item v-if="user">
             <span>{{ user.name }}님 안녕하세요 </span>
-            <b-button class="mr-1 ml-1" pill variant="success"><router-link to="/profile">마이 페이지</router-link></b-button>
-            <b-button class="mr-1 ml-1" pill variant="warning" @click="deleteToken">로그아웃</b-button>
+            <b-button class="mr-1 ml-1" pill variant="success"
+              ><router-link to="/profile">마이 페이지</router-link></b-button
+            >
+            <b-button
+              class="mr-1 ml-1"
+              pill
+              variant="warning"
+              @click="deleteToken"
+              >로그아웃</b-button
+            >
           </b-nav-item>
-          <b-button v-else pill variant="success"><router-link to="/login">로그인</router-link></b-button>
+          <b-button v-else pill variant="success"
+            ><router-link to="/login">로그인</router-link></b-button
+          >
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -71,42 +71,40 @@ export default {
     BNavbarNav,
     BNavItem,
   },
-  data(){
-    return{
-      user:null,
-    }
+  data() {
+    return {
+      user: null,
+    };
   },
-  mounted(){
+  mounted() {
     this.getUser();
-    console.log(this.user)
+    console.log(this.user);
   },
-  methods:{
-    async getUser(){
+  methods: {
+    async getUser() {
       const token = sessionStorage.getItem("token");
-      if(token){
-        try{
-          const response = await http.get(`/user`,{
-            headers:{
+      if (token) {
+        try {
+          const response = await http.get(`/user`, {
+            headers: {
               Authorization: `Bearer ${token}`,
             },
           });
-          if(response.status === 200){
+          if (response.status === 200) {
             this.user = response.data;
           }
-        }catch(error){
+        } catch (error) {
           console.log(error);
         }
       }
     },
-    deleteToken(){
+    deleteToken() {
       sessionStorage.removeItem("token");
-      this.$router.push('/')
+      this.$router.push("/");
       location.reload();
-    }
-  }
-
-
-}
+    },
+  },
+};
 </script>
 
 <style>
@@ -120,8 +118,10 @@ nav a.router-link-exact-active {
   color: #ffffff;
   text-decoration: none;
 }
-.navbar-brand{
-  width:200px;
+.navbar-brand {
+  width: 200px;
 }
-
+.nav-link {
+  margin: 0 20px;
+}
 </style>

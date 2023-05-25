@@ -1,20 +1,26 @@
 <template>
   <div>
-    <h1>위시리스트</h1>
+    <h1>FAVORITES</h1>
     <hr />
     <div class="d-flex flex-wrap">
-      <div class="mb-3 col-lg-3 col-md-4 col-sm-6" v-for="(item, index) in wishList" :key="index">
+      <div
+        class="mb-3 col-lg-3 col-md-4 col-sm-6"
+        v-for="(item, index) in wishList"
+        :key="index"
+      >
         <div class="card">
           <img
             class="card-img-top"
             :src="item.image"
             :alt="item.title"
-            @error="item.image = 'https://eumseongcci.korcham.net/images/no-image01.gif'"
+            @error="
+              item.image =
+                'https://eumseongcci.korcham.net/images/no-image01.gif'
+            "
           />
           <div class="card-body">
             <h6 class="card-title">{{ item.title }}</h6>
             <p class="card-text">{{ item.address }}</p>
-            
           </div>
           <div class="card-footer">
             <b-icon
@@ -108,17 +114,17 @@ export default {
 </script>
   
 <style scoped>
-.card{
+.card {
   height: 400px;
 }
-  .card-title{
-    font-weight: bold;
-  }
-  .card-text{
-    font-size: small;
-  }
-  .card-img-top{
-    height: 200px;
-    object-fit: cover;
-  }
+.card-title {
+  font-weight: bold;
+}
+.card-text {
+  font-size: small;
+}
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
 </style>
