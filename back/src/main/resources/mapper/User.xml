@@ -28,6 +28,12 @@
         where email = #{email}
     </select>
 
+    <select id="findByEmailAndName" resultType="User">
+        select *
+        from user
+        where email = #{email} and name = #{name};
+    </select>
+
     <update id="update">
         update user
         set password = #{password}, name = #{name}, email = #{email}
