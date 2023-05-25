@@ -2,10 +2,10 @@ package com.ssafy.enjoytrip.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.time.LocalDate;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class Plan {
 
@@ -15,7 +15,7 @@ public class Plan {
 
     private int attractionId;
 
-    private LocalDate date;
+    private String date;
 
     private int order;
 
