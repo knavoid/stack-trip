@@ -34,7 +34,7 @@
         </b-col>
         <b-col cols="6">
           <h3>HOT 게시글</h3>
-          <b-table :items="top_post" :fields="post_fields">
+          <b-table class=" hotTable" :items="top_post" :fields="post_fields">
             <template #ceil(title)="row">
               {{ row.item.subject }}
             </template>
@@ -114,5 +114,9 @@ export default {
   }
   a {
     text-decoration: none;
+  }
+  .hotTable{
+    font-size: 12px;
+    
   }
 </style>
