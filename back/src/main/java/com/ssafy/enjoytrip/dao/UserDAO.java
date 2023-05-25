@@ -16,6 +16,8 @@ public interface UserDAO {
 
     public User findByEmail(String email);
 
+    public User findByEmailAndName(String email, String name);
+
     public void update(User user);
 
     public void deleteByUserCode(int userCode);

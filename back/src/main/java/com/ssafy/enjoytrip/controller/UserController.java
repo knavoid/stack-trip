@@ -5,6 +5,7 @@ import com.ssafy.enjoytrip.dto.User;
 import com.ssafy.enjoytrip.service.UserService;
 import com.ssafy.enjoytrip.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +67,16 @@ public class UserController {
     @GetMapping("/email")
     protected ResponseEntity<Boolean> emailDuplicateCheck(@RequestParam String email) throws Exception {
         return ResponseEntity.ok(userService.isEmailExist(email));
+    }
+
+    @GetMapping("/password")
+    protected ResponseEntity<?> findPassword(@RequestParam String email, @RequestParam String name) throws Exception {
+        User user = userService.findPassword(email, name);
+        if (user != null){
+            return ResponseEntity.ok(user.getPassword());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{userCode}")

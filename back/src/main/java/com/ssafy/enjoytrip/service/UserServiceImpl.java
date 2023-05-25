@@ -35,6 +35,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findPassword(String email, String name) throws Exception {
+        return userDAO.findByEmailAndName(email, name);
+    }
+
+    @Override
     public void modifyUserInfo(User user) throws Exception {
         userDAO.update(user);
     }

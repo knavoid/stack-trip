@@ -12,6 +12,8 @@ public interface UserService {
 
     boolean isEmailExist(String email) throws Exception;
 
+    User findPassword(String email, String name) throws Exception;
+
     void modifyUserInfo(User user) throws Exception;
 
     void deleteAccount(int userCode) throws Exception;
